@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
@@ -56,6 +61,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "husky": "^9.1.7",
+    "jsdom": "^26.1.0",
     "lint-staged": "^16.1.5",
     "playwright": "^1.55.0",
     "prettier": "^3.6.2",

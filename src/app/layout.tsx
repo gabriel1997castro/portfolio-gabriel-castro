@@ -2,14 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { defaultSEO } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Gabriel Castro - Senior Frontend Engineer",
-  description: "Portfolio of Gabriel Castro, Senior Frontend Engineer focused on React, TypeScript, and modern web development.",
-  keywords: ["Gabriel Castro", "Frontend Engineer", "React", "TypeScript", "Portfolio"],
-  authors: [{ name: "Gabriel Castro" }],
-  viewport: "width=device-width, initial-scale=1",
-};
+export const metadata: Metadata = defaultSEO;
 
 export default function RootLayout({
   children,
