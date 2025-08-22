@@ -4,77 +4,21 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Github, ExternalLink } from "lucide-react"
 import Link from "next/link"
+import { getProjects } from "@/lib/sanity/utils"
+import { urlFor } from "@/lib/sanity/client"
+import Image from "next/image"
 
 export const metadata: Metadata = {
   title: 'Projects - Gabriel Castro',
   description: 'Explore my portfolio of React and TypeScript projects',
 }
 
-// Sample projects data - will be replaced with Sanity data later
-const projects = [
-  {
-    id: '1',
-    title: 'ShowSeeker Pilot',
-    slug: 'showseeker-pilot',
-    tagline: 'Advanced ads management platform',
-    summary: 'Built new features for ads management and pilot product development using modern React and TypeScript stack with comprehensive testing.',
-    tech: ['React', 'TypeScript', 'AG Grid', 'Cypress', 'Jest'],
-    year: 2024,
-    featured: true,
-    links: {
-      liveUrl: 'https://demo.showseeker.com',
-      gitUrl: null,
-    },
-    image: 'bg-gradient-to-br from-blue-500 to-purple-600',
-  },
-  {
-    id: '2',
-    title: 'Insurance Fast Quote',
-    slug: 'insurance-fast-quote',
-    tagline: 'Streamlined insurance quote experience',
-    summary: 'Developed a guided quote UX with React, TypeScript, and Storybook. Implemented comprehensive testing with Jest/RTL and Cypress.',
-    tech: ['React', 'TypeScript', 'Storybook', 'Jest', 'RTL', 'Cypress'],
-    year: 2023,
-    featured: true,
-    links: {
-      liveUrl: 'https://demo.insurance.com',
-      gitUrl: 'https://github.com/gabriel1997castro/insurance-quote',
-    },
-    image: 'bg-gradient-to-br from-green-500 to-teal-600',
-  },
-  {
-    id: '3',
-    title: 'Consultant Chatbot',
-    slug: 'consultant-chatbot',
-    tagline: 'AI-powered consulting assistant',
-    summary: 'Built a lightweight Preact chatbot with Spring APIs backend. Features include intelligent suggestions and PDF rendering.',
-    tech: ['Preact', 'Spring Boot', 'Python', 'Docker', 'Kubernetes'],
-    year: 2022,
-    featured: false,
-    links: {
-      liveUrl: null,
-      gitUrl: 'https://github.com/gabriel1997castro/consultant-bot',
-    },
-    image: 'bg-gradient-to-br from-orange-500 to-red-600',
-  },
-  {
-    id: '4',
-    title: 'Healthcare Hub (FHIR)',
-    slug: 'healthcare-hub-fhir',
-    tagline: 'FHIR-compliant patient records system',
-    summary: 'Developed a comprehensive healthcare platform with patient records and vaccination schedules using React and React Native.',
-    tech: ['React', 'React Native', 'FHIR', 'Node.js', 'GraphQL'],
-    year: 2021,
-    featured: true,
-    links: {
-      liveUrl: 'https://demo.healthcare-hub.com',
-      gitUrl: null,
-    },
-    image: 'bg-gradient-to-br from-purple-500 to-pink-600',
-  },
-]
+// Enable ISR with revalidation every 60 seconds
+export const revalidate = 60
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const projects = await getProjects()
+  
   return (
     <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
       {/* Header */}
@@ -93,13 +37,22 @@ export default function ProjectsPage() {
         <h2 className="text-2xl font-bold tracking-tight mb-6">Featured Projects</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects
-            .filter(project => project.featured)
+            ?.filter(project => project.featured)
             .map((project) => (
-              <Card key={project.id} className="group hover:shadow-lg transition-all duration-200">
+              <Card key={project._id} className="group hover:shadow-lg transition-all duration-200">
                 <CardHeader>
-                  <div className={`aspect-video ${project.image} rounded-lg mb-4`} />
+                  <div className="aspect-video bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg mb-4 relative overflow-hidden">
+                    {project.images?.[0]?.image && (
+                      <Image
+                        src={urlFor(project.images[0].image).width(400).height(225).url()}
+                        alt={project.images[0].caption || project.title}
+                        fill
+                        className="object-cover"
+                      />
+                    )}
+                  </div>
                   <CardTitle className="group-hover:text-primary transition-colors">
-                    <Link href={`/projects/${project.slug}`}>
+                    <Link href={`/projects/${project.slug.current}`}>
                       {project.title}
                     </Link>
                   </CardTitle>
@@ -111,7 +64,7 @@ export default function ProjectsPage() {
                   </p>
                   
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tech.map((tech) => (
+                    {project.tech?.map((tech) => (
                       <Badge key={tech} variant="secondary" className="text-xs">
                         {tech}
                       </Badge>
@@ -123,14 +76,14 @@ export default function ProjectsPage() {
                       {project.year}
                     </span>
                     <div className="flex gap-2">
-                      {project.links.gitUrl && (
+                      {project.links?.gitUrl && (
                         <Button size="sm" variant="outline" asChild>
                           <Link href={project.links.gitUrl} target="_blank" rel="noopener noreferrer">
                             <Github className="h-4 w-4" />
                           </Link>
                         </Button>
                       )}
-                      {project.links.liveUrl && (
+                      {project.links?.liveUrl && (
                         <Button size="sm" asChild>
                           <Link href={project.links.liveUrl} target="_blank" rel="noopener noreferrer">
                             <ExternalLink className="h-4 w-4" />
@@ -149,12 +102,21 @@ export default function ProjectsPage() {
       <section>
         <h2 className="text-2xl font-bold tracking-tight mb-6">All Projects</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project) => (
-            <Card key={project.id} className="group hover:shadow-lg transition-all duration-200">
+          {projects?.map((project) => (
+            <Card key={project._id} className="group hover:shadow-lg transition-all duration-200">
               <CardHeader>
-                <div className={`aspect-video ${project.image} rounded-lg mb-4`} />
+                <div className="aspect-video bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg mb-4 relative overflow-hidden">
+                  {project.images?.[0]?.image && (
+                    <Image
+                      src={urlFor(project.images[0].image).width(400).height(225).url()}
+                      alt={project.images[0].caption || project.title}
+                      fill
+                      className="object-cover"
+                    />
+                  )}
+                </div>
                 <CardTitle className="group-hover:text-primary transition-colors">
-                  <Link href={`/projects/${project.slug}`}>
+                  <Link href={`/projects/${project.slug.current}`}>
                     {project.title}
                   </Link>
                 </CardTitle>
@@ -166,7 +128,7 @@ export default function ProjectsPage() {
                 </p>
                 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tech.map((tech) => (
+                  {project.tech?.map((tech) => (
                     <Badge key={tech} variant="secondary" className="text-xs">
                       {tech}
                     </Badge>
@@ -178,14 +140,14 @@ export default function ProjectsPage() {
                     {project.year}
                   </span>
                   <div className="flex gap-2">
-                    {project.links.gitUrl && (
+                    {project.links?.gitUrl && (
                       <Button size="sm" variant="outline" asChild>
                         <Link href={project.links.gitUrl} target="_blank" rel="noopener noreferrer">
                           <Github className="h-4 w-4" />
                         </Link>
                       </Button>
                     )}
-                    {project.links.liveUrl && (
+                    {project.links?.liveUrl && (
                       <Button size="sm" asChild>
                         <Link href={project.links.liveUrl} target="_blank" rel="noopener noreferrer">
                           <ExternalLink className="h-4 w-4" />

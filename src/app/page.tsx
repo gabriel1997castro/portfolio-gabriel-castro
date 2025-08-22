@@ -3,22 +3,32 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Github, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { getFeaturedProjects, getFeaturedPosts, getSiteSettings } from "@/lib/sanity/utils";
+import { urlFor } from "@/lib/sanity/client";
+import Image from "next/image";
 
-export default function Home() {
+// Enable ISR with revalidation every 60 seconds
+export const revalidate = 60
+
+export default async function Home() {
+  // Fetch data from Sanity
+  const [siteSettings, featuredProjects, featuredPosts] = await Promise.all([
+    getSiteSettings(),
+    getFeaturedProjects(),
+    getFeaturedPosts(),
+  ]);
   return (
     <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
       {/* Hero Section */}
       <section className="py-20 text-center">
         <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 font-display">
-          Gabriel Castro
+          {siteSettings?.name || 'Gabriel Castro'}
         </h1>
         <h2 className="text-xl md:text-2xl text-muted-foreground mb-8">
-          Senior Frontend Engineer
+          {siteSettings?.title || 'Senior Frontend Engineer'}
         </h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-          Passionate about building exceptional user experiences with React, TypeScript, 
-          and modern web technologies. Focused on performance, clean code, and shipping 
-          high-quality features.
+          {siteSettings?.bio || 'Passionate about building exceptional user experiences with React, TypeScript, and modern web technologies. Focused on performance, clean code, and shipping high-quality features.'}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button asChild>
@@ -44,87 +54,51 @@ export default function Home() {
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Sample Project Cards */}
-          <Card className="group hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="aspect-video bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg mb-4" />
-              <CardTitle>ShowSeeker Pilot</CardTitle>
-              <CardDescription>
-                Ads management features with modern React and TypeScript
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <Badge variant="secondary">React</Badge>
-                <Badge variant="secondary">TypeScript</Badge>
-                <Badge variant="secondary">AG Grid</Badge>
-              </div>
-              <div className="flex gap-2">
-                <Button size="sm" variant="outline">
-                  <Github className="h-4 w-4 mr-2" />
-                  Code
-                </Button>
-                <Button size="sm">
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Live Demo
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="aspect-video bg-gradient-to-br from-green-500 to-teal-600 rounded-lg mb-4" />
-              <CardTitle>Insurance Fast Quote</CardTitle>
-              <CardDescription>
-                Guided quote UX with comprehensive testing
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <Badge variant="secondary">React</Badge>
-                <Badge variant="secondary">Storybook</Badge>
-                <Badge variant="secondary">Jest</Badge>
-              </div>
-              <div className="flex gap-2">
-                <Button size="sm" variant="outline">
-                  <Github className="h-4 w-4 mr-2" />
-                  Code
-                </Button>
-                <Button size="sm">
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Live Demo
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="aspect-video bg-gradient-to-br from-orange-500 to-red-600 rounded-lg mb-4" />
-              <CardTitle>Healthcare Hub</CardTitle>
-              <CardDescription>
-                FHIR-compliant patient records system
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <Badge variant="secondary">React</Badge>
-                <Badge variant="secondary">React Native</Badge>
-                <Badge variant="secondary">FHIR</Badge>
-              </div>
-              <div className="flex gap-2">
-                <Button size="sm" variant="outline">
-                  <Github className="h-4 w-4 mr-2" />
-                  Code
-                </Button>
-                <Button size="sm">
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Live Demo
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          {featuredProjects?.map((project) => (
+            <Card key={project._id} className="group hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="aspect-video bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg mb-4 relative overflow-hidden">
+                  {project.images?.[0]?.image && (
+                    <Image
+                      src={urlFor(project.images[0].image).width(400).height(225).url()}
+                      alt={project.images[0].caption || project.title}
+                      fill
+                      className="object-cover"
+                    />
+                  )}
+                </div>
+                <CardTitle>{project.title}</CardTitle>
+                <CardDescription>
+                  {project.tagline || project.summary}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {project.tech?.map((tech) => (
+                    <Badge key={tech} variant="secondary">{tech}</Badge>
+                  ))}
+                </div>
+                <div className="flex gap-2">
+                  {project.links?.gitUrl && (
+                    <Button size="sm" variant="outline" asChild>
+                      <Link href={project.links.gitUrl} target="_blank" rel="noopener noreferrer">
+                        <Github className="h-4 w-4 mr-2" />
+                        Code
+                      </Link>
+                    </Button>
+                  )}
+                  {project.links?.liveUrl && (
+                    <Button size="sm" asChild>
+                      <Link href={project.links.liveUrl} target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="h-4 w-4 mr-2" />
+                        Live Demo
+                      </Link>
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </section>
 
@@ -140,57 +114,26 @@ export default function Home() {
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Sample Blog Cards */}
-          <Card className="group hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="line-clamp-2">
-                React Performance Optimization Techniques
-              </CardTitle>
-              <CardDescription>
-                Best practices for keeping your React apps fast and responsive
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <span>Dec 15, 2024</span>
-                <Badge variant="outline">React</Badge>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="line-clamp-2">
-                Testing Strategies for Modern Frontend
-              </CardTitle>
-              <CardDescription>
-                Comprehensive guide to testing React applications
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <span>Dec 10, 2024</span>
-                <Badge variant="outline">Testing</Badge>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="line-clamp-2">
-                TypeScript Tips for Better DX
-              </CardTitle>
-              <CardDescription>
-                Advanced TypeScript patterns for improved developer experience
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <span>Dec 5, 2024</span>
-                <Badge variant="outline">TypeScript</Badge>
-              </div>
-            </CardContent>
-          </Card>
+          {featuredPosts?.map((post) => (
+            <Card key={post._id} className="group hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <CardTitle className="line-clamp-2">
+                  {post.title}
+                </CardTitle>
+                <CardDescription>
+                  {post.excerpt}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <time>{new Date(post.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</time>
+                  {post.tags?.[0] && (
+                    <Badge variant="outline">{post.tags[0]}</Badge>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </section>
     </div>
