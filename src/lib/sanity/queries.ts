@@ -32,7 +32,7 @@ export const featuredProjectsQuery = `*[_type == "project" && featured == true] 
   summary,
   tech,
   year,
-  images[0],
+  images,
   links
 }`
 
