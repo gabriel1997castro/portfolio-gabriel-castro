@@ -90,9 +90,6 @@ src/
    
    # Site URL
    NEXT_PUBLIC_SITE_URL=http://localhost:3000
-   
-   # Revalidation
-   REVALIDATE_SECRET=your_revalidate_secret
    ```
 
 4. **Start the development server**
@@ -175,7 +172,6 @@ NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
 SANITY_READ_TOKEN=your_read_token
 NEXT_PUBLIC_SITE_URL=https://your-domain.com
-REVALIDATE_SECRET=your_revalidate_secret
 ```
 
 ## 📊 Performance
