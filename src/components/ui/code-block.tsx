@@ -105,13 +105,13 @@ export function CodeBlock({
       className
     )}>
       {/* Header with language badge and copy button */}
-      <div className="flex items-center justify-between px-4 py-2 border-b bg-muted/50">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between px-3 sm:px-4 py-2 border-b bg-muted/50">
+        <div className="flex items-center gap-2 min-w-0 flex-1">
           {title && (
-            <span className="text-sm font-medium text-foreground">{title}</span>
+            <span className="text-xs sm:text-sm font-medium text-foreground truncate">{title}</span>
           )}
           {language && language !== 'text' && (
-            <Badge variant="secondary" className="text-xs">
+            <Badge variant="secondary" className="text-xs flex-shrink-0">
               {getLanguageDisplayName(language)}
             </Badge>
           )}
@@ -120,7 +120,7 @@ export function CodeBlock({
           variant="ghost"
           size="sm"
           onClick={copyToClipboard}
-          className="h-8 w-8 p-0 opacity-70 hover:opacity-100 transition-opacity"
+          className="h-8 w-8 p-0 opacity-70 hover:opacity-100 transition-opacity flex-shrink-0 ml-2"
         >
           {copied ? (
             <Check className="h-3 w-3 text-green-500" />
@@ -130,23 +130,24 @@ export function CodeBlock({
         </Button>
       </div>
 
-      {/* Code content */}
-      <div className="relative overflow-x-auto">
+      {/* Code content with improved mobile scrolling */}
+      <div className="relative overflow-x-auto scrollbar-thin scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent">
         <div 
           className={cn(
-            "p-4 text-sm",
+            "p-3 sm:p-4 text-xs sm:text-sm leading-relaxed",
             "[&>pre]:!bg-transparent [&>pre]:!border-0 [&>pre]:!p-0 [&>pre]:!m-0",
-            "[&>pre>code]:!bg-transparent [&>pre>code]:!p-0",
-            showLineNumbers && "[&>pre]:pl-12"
+            "[&>pre>code]:!bg-transparent [&>pre>code]:!p-0 [&>pre>code]:!text-xs [&>pre>code]:sm:!text-sm",
+            "[&>pre>code]:!font-mono [&>pre>code]:!leading-relaxed",
+            showLineNumbers && "sm:[&>pre]:pl-12"
           )}
           dangerouslySetInnerHTML={{ __html: highlightedCode }}
         />
         
-        {/* Line numbers overlay */}
+        {/* Line numbers overlay - hidden on mobile for better readability */}
         {showLineNumbers && (
-          <div className="absolute left-0 top-0 p-4 pr-2 text-xs text-muted-foreground border-r border-border/50 bg-muted/20 select-none">
+          <div className="hidden sm:block absolute left-0 top-0 p-3 sm:p-4 pr-2 text-xs text-muted-foreground border-r border-border/50 bg-muted/20 select-none">
             {code.split('\n').map((_, index) => (
-              <div key={index} className="leading-[1.5] min-h-[1.5em]">
+              <div key={index} className="leading-relaxed min-h-[1.5em]">
                 {index + 1}
               </div>
             ))}

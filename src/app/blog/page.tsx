@@ -44,32 +44,32 @@ export default async function BlogPage() {
           <h2 className="text-2xl font-bold tracking-tight mb-6">Featured Posts</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {featuredPosts.map((post) => (
-              <Card key={post._id} className="group hover:shadow-lg transition-all duration-200">
-                <CardHeader>
-                  <div className="flex items-center justify-between mb-2">
-                    <time className="text-sm text-muted-foreground">
-                      {formatDate(post.publishedAt)}
-                    </time>
-                  </div>
-                  <CardTitle className="group-hover:text-primary transition-colors line-clamp-2">
-                    <Link href={`/blog/${post.slug.current}`}>
+              <Link key={post._id} href={`/blog/${post.slug.current}`}>
+                <Card className="group hover:shadow-lg hover:scale-[1.02] transition-all duration-200 cursor-pointer h-full">
+                  <CardHeader>
+                    <div className="flex items-center justify-between mb-2">
+                      <time className="text-sm text-muted-foreground">
+                        {formatDate(post.publishedAt)}
+                      </time>
+                    </div>
+                    <CardTitle className="group-hover:text-primary transition-colors line-clamp-2">
                       {post.title}
-                    </Link>
-                  </CardTitle>
-                  <CardDescription className="line-clamp-3">
-                    {post.excerpt}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {post.tags?.map((tag) => (
-                      <Badge key={tag} variant="secondary" className="text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+                    </CardTitle>
+                    <CardDescription className="line-clamp-3">
+                      {post.excerpt}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                      {post.tags?.map((tag) => (
+                        <Badge key={tag} variant="secondary" className="text-xs">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </section>
@@ -80,39 +80,39 @@ export default async function BlogPage() {
         <h2 className="text-2xl font-bold tracking-tight mb-6">All Posts</h2>
         <div className="space-y-6">
           {allPosts.map((post) => (
-            <Card key={post._id} className="group hover:shadow-md transition-all duration-200">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-4 mb-2">
-                      <time className="text-sm text-muted-foreground">
-                        {formatDate(post.publishedAt)}
-                      </time>
-                      {post.featured && (
-                        <Badge variant="outline" className="text-xs">
-                          Featured
-                        </Badge>
-                      )}
-                    </div>
-                    <CardTitle className="group-hover:text-primary transition-colors mb-2">
-                      <Link href={`/blog/${post.slug.current}`}>
+            <Link key={post._id} href={`/blog/${post.slug.current}`}>
+              <Card className="group hover:shadow-md hover:scale-[1.01] transition-all duration-200 cursor-pointer">
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-4 mb-2">
+                        <time className="text-sm text-muted-foreground">
+                          {formatDate(post.publishedAt)}
+                        </time>
+                        {post.featured && (
+                          <Badge variant="outline" className="text-xs">
+                            Featured
+                          </Badge>
+                        )}
+                      </div>
+                      <CardTitle className="group-hover:text-primary transition-colors mb-2">
                         {post.title}
-                      </Link>
-                    </CardTitle>
-                    <CardDescription className="line-clamp-2 mb-3">
-                      {post.excerpt}
-                    </CardDescription>
-                    <div className="flex flex-wrap gap-2">
-                      {post.tags?.map((tag) => (
-                        <Badge key={tag} variant="secondary" className="text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
+                      </CardTitle>
+                      <CardDescription className="line-clamp-2 mb-3">
+                        {post.excerpt}
+                      </CardDescription>
+                      <div className="flex flex-wrap gap-2">
+                        {post.tags?.map((tag) => (
+                          <Badge key={tag} variant="secondary" className="text-xs">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CardHeader>
-            </Card>
+                </CardHeader>
+              </Card>
+            </Link>
           ))}
         </div>
       </section>

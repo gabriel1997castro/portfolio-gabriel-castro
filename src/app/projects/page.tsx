@@ -39,7 +39,81 @@ export default async function ProjectsPage() {
           {projects
             ?.filter(project => project.featured)
             .map((project) => (
-              <Card key={project._id} className="group hover:shadow-lg transition-all duration-200">
+              <Link key={project._id} href={`/projects/${project.slug.current}`}>
+                <Card className="group hover:shadow-lg hover:scale-[1.02] transition-all duration-200 cursor-pointer h-full">
+                  <CardHeader>
+                    <div className="aspect-video bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg mb-4 relative overflow-hidden">
+                      {project.images?.[0]?.image && (
+                        <Image
+                          src={urlFor(project.images[0].image).width(400).height(225).url()}
+                          alt={project.images[0].caption || project.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      )}
+                    </div>
+                    <CardTitle className="group-hover:text-primary transition-colors">
+                      {project.title}
+                    </CardTitle>
+                    <CardDescription>{project.tagline}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                      {project.summary}
+                    </p>
+                    
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {project.tech?.map((tech) => (
+                        <Badge key={tech} variant="secondary" className="text-xs">
+                          {tech}
+                        </Badge>
+                      ))}
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">
+                        {project.year}
+                      </span>
+                      <div className="flex gap-2">
+                        {project.links?.gitUrl && (
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            asChild 
+                            onClickCapture={(e) => e.stopPropagation()}
+                          >
+                            <Link href={project.links.gitUrl} target="_blank" rel="noopener noreferrer">
+                              <Github className="h-4 w-4" />
+                            </Link>
+                          </Button>
+                        )}
+                        {project.links?.liveUrl && (
+                          <Button 
+                            size="sm" 
+                            asChild 
+                            onClickCapture={(e) => e.stopPropagation()}
+                          >
+                            <Link href={project.links.liveUrl} target="_blank" rel="noopener noreferrer">
+                              <ExternalLink className="h-4 w-4" />
+                            </Link>
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+        </div>
+      </section>
+
+      {/* All Projects */}
+      <section>
+        <h2 className="text-2xl font-bold tracking-tight mb-6">All Projects</h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects?.map((project) => (
+            <Link key={project._id} href={`/projects/${project.slug.current}`}>
+              <Card className="group hover:shadow-lg hover:scale-[1.02] transition-all duration-200 cursor-pointer h-full">
                 <CardHeader>
                   <div className="aspect-video bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg mb-4 relative overflow-hidden">
                     {project.images?.[0]?.image && (
@@ -47,14 +121,12 @@ export default async function ProjectsPage() {
                         src={urlFor(project.images[0].image).width(400).height(225).url()}
                         alt={project.images[0].caption || project.title}
                         fill
-                        className="object-cover"
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     )}
                   </div>
                   <CardTitle className="group-hover:text-primary transition-colors">
-                    <Link href={`/projects/${project.slug.current}`}>
-                      {project.title}
-                    </Link>
+                    {project.title}
                   </CardTitle>
                   <CardDescription>{project.tagline}</CardDescription>
                 </CardHeader>
@@ -77,14 +149,23 @@ export default async function ProjectsPage() {
                     </span>
                     <div className="flex gap-2">
                       {project.links?.gitUrl && (
-                        <Button size="sm" variant="outline" asChild>
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          asChild 
+                          onClickCapture={(e) => e.stopPropagation()}
+                        >
                           <Link href={project.links.gitUrl} target="_blank" rel="noopener noreferrer">
                             <Github className="h-4 w-4" />
                           </Link>
                         </Button>
                       )}
                       {project.links?.liveUrl && (
-                        <Button size="sm" asChild>
+                        <Button 
+                          size="sm" 
+                          asChild 
+                          onClickCapture={(e) => e.stopPropagation()}
+                        >
                           <Link href={project.links.liveUrl} target="_blank" rel="noopener noreferrer">
                             <ExternalLink className="h-4 w-4" />
                           </Link>
@@ -94,70 +175,7 @@ export default async function ProjectsPage() {
                   </div>
                 </CardContent>
               </Card>
-            ))}
-        </div>
-      </section>
-
-      {/* All Projects */}
-      <section>
-        <h2 className="text-2xl font-bold tracking-tight mb-6">All Projects</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects?.map((project) => (
-            <Card key={project._id} className="group hover:shadow-lg transition-all duration-200">
-              <CardHeader>
-                <div className="aspect-video bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg mb-4 relative overflow-hidden">
-                  {project.images?.[0]?.image && (
-                    <Image
-                      src={urlFor(project.images[0].image).width(400).height(225).url()}
-                      alt={project.images[0].caption || project.title}
-                      fill
-                      className="object-cover"
-                    />
-                  )}
-                </div>
-                <CardTitle className="group-hover:text-primary transition-colors">
-                  <Link href={`/projects/${project.slug.current}`}>
-                    {project.title}
-                  </Link>
-                </CardTitle>
-                <CardDescription>{project.tagline}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
-                  {project.summary}
-                </p>
-                
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tech?.map((tech) => (
-                    <Badge key={tech} variant="secondary" className="text-xs">
-                      {tech}
-                    </Badge>
-                  ))}
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">
-                    {project.year}
-                  </span>
-                  <div className="flex gap-2">
-                    {project.links?.gitUrl && (
-                      <Button size="sm" variant="outline" asChild>
-                        <Link href={project.links.gitUrl} target="_blank" rel="noopener noreferrer">
-                          <Github className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                    )}
-                    {project.links?.liveUrl && (
-                      <Button size="sm" asChild>
-                        <Link href={project.links.liveUrl} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            </Link>
           ))}
         </div>
       </section>
