@@ -7,6 +7,7 @@ import { ArrowLeft, Calendar, Share2 } from "lucide-react"
 import Link from "next/link"
 import { getPostBySlug, getPosts, getPostSlugs } from "@/lib/sanity/utils"
 import { PortableText } from '@portabletext/react'
+import { portableTextComponents } from '@/components/portable-text-components'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -119,8 +120,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {/* Main Content */}
           <article className="lg:col-span-3">
             {post.body ? (
-              <div className="prose prose-invert prose-lg max-w-none prose-headings:font-display prose-h2:text-2xl prose-h3:text-xl prose-pre:bg-muted prose-pre:border prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded">
-                <PortableText value={post.body} />
+              <div className="prose prose-invert prose-lg max-w-none prose-headings:font-display prose-h2:text-2xl prose-h3:text-xl">
+                <PortableText value={post.body} components={portableTextComponents} />
               </div>
             ) : (
               <div className="prose prose-invert prose-lg max-w-none">

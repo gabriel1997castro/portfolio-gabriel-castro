@@ -82,6 +82,7 @@
   --color-chart-5: hsl(var(--chart-5));
   --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-display: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
 }
 
 * {
@@ -92,4 +93,40 @@ body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
   font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+/* Enhanced code block and inline code styling */
+code, pre {
+  font-family: var(--font-mono);
+  font-variant-ligatures: normal;
+}
+
+/* Improve code readability */
+.shiki, .shiki span {
+  color: var(--shiki-color) !important;
+  font-style: var(--shiki-font-style) !important;
+  font-weight: var(--shiki-font-weight) !important;
+  text-decoration: var(--shiki-text-decoration) !important;
+}
+
+/* Ensure proper line height for code blocks */
+.shiki code {
+  counter-reset: step;
+  counter-increment: step 0;
+}
+
+.shiki code .line::before {
+  content: counter(step);
+  counter-increment: step;
+  width: 1rem;
+  margin-right: 1.5rem;
+  display: inline-block;
+  text-align: right;
+  color: rgba(115, 138, 148, 0.4);
+  font-size: 0.875rem;
+}
+
+/* Hide line numbers by default */
+.shiki:not(.line-numbers) code .line::before {
+  display: none;
 }
