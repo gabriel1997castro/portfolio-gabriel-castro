@@ -38,7 +38,7 @@ export default async function Home() {
             <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto lg:mx-0">
               <Image
                 src="/images/gabriel-castro.jpg"
-                alt="Gabriel Castro - Senior Frontend Engineer"
+                alt="Gabriel Castro - Frontend Engineer"
                 fill
                 className="rounded-full object-cover border-4 border-white/10 shadow-2xl"
                 priority
@@ -52,7 +52,7 @@ export default async function Home() {
               {siteSettings?.name || "Gabriel Castro"}
             </h1>
             <h2 className="text-xl md:text-2xl text-muted-foreground mb-8">
-              {siteSettings?.title || "Senior Frontend Engineer"}
+              {siteSettings?.title || "Frontend Engineer"}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto lg:mx-0 mb-8">
               {siteSettings?.bio ||
