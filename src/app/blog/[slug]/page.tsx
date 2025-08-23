@@ -63,10 +63,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     .slice(0, 2) || []
 
   return (
-    <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8 max-w-7xl">
       {/* Back Navigation */}
       <div className="mb-8">
-        <Button variant="ghost" asChild>
+        <Button variant="ghost" asChild className="h-auto py-2 px-3">
           <Link href="/blog">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Blog
@@ -76,15 +76,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       <div className="max-w-4xl mx-auto">
         {/* Article Header */}
-        <header className="mb-12">
-          <div className="flex items-center gap-4 mb-4 text-sm text-muted-foreground">
+        <header className="mb-8 md:mb-12">
+          <div className="flex flex-wrap items-center gap-2 md:gap-4 mb-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
               <time>{formatDate(post.publishedAt)}</time>
             </div>
             {post.featured && (
               <>
-                <span>•</span>
+                <span className="hidden sm:block">•</span>
                 <Badge variant="outline" className="text-xs">
                   Featured
                 </Badge>
@@ -92,47 +92,47 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             )}
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 font-display">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 md:mb-6 font-display leading-tight">
             {post.title}
           </h1>
           
-          <p className="text-xl text-muted-foreground mb-6">
+          <p className="text-lg md:text-xl text-muted-foreground mb-4 md:mb-6 leading-relaxed">
             {post.excerpt}
           </p>
           
-          <div className="flex flex-wrap gap-2 mb-6">
+          <div className="flex flex-wrap gap-2 mb-4 md:mb-6">
             {post.tags?.map((tag) => (
-              <Badge key={tag} variant="secondary">
+              <Badge key={tag} variant="secondary" className="text-xs">
                 {tag}
               </Badge>
             ))}
           </div>
 
           <div className="flex items-center gap-4">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="h-auto py-2 px-3">
               <Share2 className="mr-2 h-4 w-4" />
               Share
             </Button>
           </div>
         </header>
 
-        <div className="grid lg:grid-cols-4 gap-12">
+        <div className="grid lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Main Content */}
-          <article className="lg:col-span-3">
+          <article className="lg:col-span-3 min-w-0">
             {post.body ? (
-              <div className="prose prose-invert prose-lg max-w-none prose-headings:font-display prose-h2:text-2xl prose-h3:text-xl">
+              <div className="prose prose-sm sm:prose prose-invert lg:prose-lg xl:prose-xl max-w-none prose-headings:font-display prose-h2:text-xl sm:prose-h2:text-2xl prose-h3:text-lg sm:prose-h3:text-xl prose-pre:max-w-full prose-pre:overflow-x-auto">
                 <PortableText value={post.body} components={portableTextComponents} />
               </div>
             ) : (
-              <div className="prose prose-invert prose-lg max-w-none">
+              <div className="prose prose-sm sm:prose prose-invert lg:prose-lg max-w-none">
                 <p>Content coming soon...</p>
               </div>
             )}
           </article>
 
           {/* Sidebar */}
-          <aside className="lg:col-span-1">
-            <div className="sticky top-24 space-y-6">
+          <aside className="lg:col-span-1 order-first lg:order-last">
+            <div className="lg:sticky lg:top-24 space-y-4 lg:space-y-6">
               {/* Table of Contents */}
               <Card>
                 <CardHeader>
