@@ -39,11 +39,19 @@ export function InteractiveButton({
     if (onClick) {
       onClick(e);
     } else if (href) {
-      window.open(
-        href,
-        target || "_self",
-        rel ? "noopener noreferrer" : undefined
-      );
+      if (!target || target === "_self") {
+        window.location.href = href;
+      } else {
+        // Convert rel to features string for window.open
+        const features = rel
+          ? rel
+              .split(" ")
+              .map((s) => s.trim())
+              .filter(Boolean)
+              .join(",")
+          : undefined;
+        window.open(href, target, features);
+      }
     }
   };
 

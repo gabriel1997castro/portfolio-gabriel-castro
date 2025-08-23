@@ -54,9 +54,16 @@ test.describe("Portfolio UI/UX Improvements", () => {
     const page_heading = page.locator("h1", { hasText: "Blog" });
     await expect(page_heading).toBeVisible();
 
-    // Wait for any blog posts to potentially load
-    await page.waitForTimeout(2000);
+    // Wait for any blog posts to potentially load by waiting for at least one blog card link to appear, or continue if none appear
 
+    try {
+      await page.waitForSelector('a[href^="/blog/"]:not([href="/blog"])', {
+        state: "visible",
+        timeout: 5000,
+      });
+    } catch (e) {
+      // No blog posts appeared within timeout, which is acceptable
+    }
     // Check for blog post cards (they are Link > Card structures)
     const blogCardLinks = page.locator('a[href^="/blog/"]:not([href="/blog"])');
     const cardCount = await blogCardLinks.count();
