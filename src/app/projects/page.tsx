@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { InteractiveButton } from "@/components/ui/interactive-button";
 import { Github, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
 import { getProjects } from "@/lib/sanity/utils";
 import { urlFor } from "@/lib/sanity/client";
 import Image from "next/image";
@@ -73,9 +74,22 @@ export default async function ProjectsPage() {
                     <CardDescription>{project.tagline}</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
-                      {project.summary}
-                    </p>
+                    <div className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                      <ReactMarkdown
+                        components={{
+                          p: ({ children }) => <span>{children}</span>,
+                          strong: ({ children }) => <strong>{children}</strong>,
+                          em: ({ children }) => <em>{children}</em>,
+                          code: ({ children }) => (
+                            <code className="bg-muted px-1 py-0.5 rounded text-xs">
+                              {children}
+                            </code>
+                          ),
+                        }}
+                      >
+                        {project.summary}
+                      </ReactMarkdown>
+                    </div>
 
                     <div className="flex flex-wrap gap-2 mb-4">
                       {project.tech?.map((tech) => (
@@ -153,9 +167,22 @@ export default async function ProjectsPage() {
                   <CardDescription>{project.tagline}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
-                    {project.summary}
-                  </p>
+                  <div className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                    <ReactMarkdown
+                      components={{
+                        p: ({ children }) => <span>{children}</span>,
+                        strong: ({ children }) => <strong>{children}</strong>,
+                        em: ({ children }) => <em>{children}</em>,
+                        code: ({ children }) => (
+                          <code className="bg-muted px-1 py-0.5 rounded text-xs">
+                            {children}
+                          </code>
+                        ),
+                      }}
+                    >
+                      {project.summary}
+                    </ReactMarkdown>
+                  </div>
 
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.tech?.map((tech) => (
