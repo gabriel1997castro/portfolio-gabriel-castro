@@ -12,7 +12,7 @@ test("homepage loads and displays main content", async ({ page }) => {
   ).toBeVisible();
 
   // Check for professional title
-  await expect(page.getByText("Senior Frontend Engineer")).toBeVisible();
+  await expect(page.getByText("Frontend Engineer")).toBeVisible();
 
   // Check for navigation links
   await expect(

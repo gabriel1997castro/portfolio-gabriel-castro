@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calendar, Share2 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { getPostBySlug, getPosts, getPostSlugs } from "@/lib/sanity/utils";
 import { PortableText } from "@portabletext/react";
 import { portableTextComponents } from "@/components/portable-text-components";
@@ -178,13 +179,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <Card>
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-                      GC
-                    </div>
+                    <Image
+                      src="/images/gabriel-castro.jpg"
+                      alt="Gabriel Castro"
+                      width={48}
+                      height={48}
+                      className="rounded-full object-cover"
+                    />
                     <div>
                       <h4 className="font-semibold">Gabriel Castro</h4>
                       <p className="text-sm text-muted-foreground">
-                        Senior Frontend Engineer
+                        Frontend Engineer
                       </p>
                     </div>
                   </div>

@@ -6,7 +6,7 @@ test.describe("Portfolio UI/UX Improvements", () => {
 
     // Check if profile photo is visible
     const profilePhoto = page.locator(
-      'img[alt="Gabriel Castro - Senior Frontend Engineer"]'
+      'img[alt="Gabriel Castro - Frontend Engineer"]'
     );
     await expect(profilePhoto).toBeVisible();
 
@@ -91,7 +91,7 @@ test.describe("Portfolio UI/UX Improvements", () => {
 
     // Check if profile photo is still visible on mobile
     const profilePhoto = page.locator(
-      'img[alt="Gabriel Castro - Senior Frontend Engineer"]'
+      'img[alt="Gabriel Castro - Frontend Engineer"]'
     );
     await expect(profilePhoto).toBeVisible();
 

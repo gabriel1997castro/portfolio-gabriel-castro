@@ -1,40 +1,42 @@
-import { Metadata } from 'next'
+import { Metadata } from "next";
 
 interface SEOProps {
-  title?: string
-  description?: string
-  image?: string
-  url?: string
-  type?: 'website' | 'article'
+  title?: string;
+  description?: string;
+  image?: string;
+  url?: string;
+  type?: "website" | "article";
 }
 
 export function generateSEO({
-  title = 'Gabriel Castro - Senior Frontend Engineer',
-  description = 'Portfolio of Gabriel Castro, Senior Frontend Engineer focused on React, TypeScript, and modern web development.',
-  image = '/og-image.png',
+  title = "Gabriel Castro - Frontend Engineer",
+  description = "Portfolio of Gabriel Castro, Frontend Engineer focused on React, TypeScript, and modern web development.",
+  image = "/og-image.png",
   url,
-  type = 'website',
+  type = "website",
 }: SEOProps = {}): Metadata {
-  const siteName = 'Gabriel Castro'
-  const fullTitle = title.includes(siteName) ? title : `${title} - ${siteName}`
+  const siteName = "Gabriel Castro";
+  const fullTitle = title.includes(siteName) ? title : `${title} - ${siteName}`;
 
   const metadata: Metadata = {
     title: fullTitle,
     description,
     keywords: [
-      'Gabriel Castro',
-      'Frontend Engineer',
-      'React Developer',
-      'TypeScript',
-      'Next.js',
-      'JavaScript',
-      'Web Development',
-      'Portfolio',
-      'Brazil',
-      'Remote',
+      "Gabriel Castro",
+      "Frontend Engineer",
+      "React Developer",
+      "TypeScript",
+      "Next.js",
+      "JavaScript",
+      "Web Development",
+      "Portfolio",
+      "Brazil",
+      "Remote",
     ],
-    authors: [{ name: 'Gabriel Castro', url: 'https://github.com/gabriel1997castro' }],
-    creator: 'Gabriel Castro',
+    authors: [
+      { name: "Gabriel Castro", url: "https://github.com/gabriel1997castro" },
+    ],
+    creator: "Gabriel Castro",
     openGraph: {
       type,
       title: fullTitle,
@@ -51,11 +53,11 @@ export function generateSEO({
       ...(url && { url }),
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title: fullTitle,
       description,
       images: [image],
-      creator: '@gabriel1997castro',
+      creator: "@gabriel1997castro",
     },
     robots: {
       index: true,
@@ -63,17 +65,17 @@ export function generateSEO({
       googleBot: {
         index: true,
         follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
       },
     },
     alternates: {
       canonical: url,
     },
-  }
+  };
 
-  return metadata
+  return metadata;
 }
 
-export const defaultSEO = generateSEO()
+export const defaultSEO = generateSEO();
