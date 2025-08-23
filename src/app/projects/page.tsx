@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { InteractiveButton } from "@/components/ui/interactive-button"
 import { Github, ExternalLink } from "lucide-react"
 import Link from "next/link"
 import { getProjects } from "@/lib/sanity/utils"
@@ -76,35 +76,27 @@ export default async function ProjectsPage() {
                       </span>
                       <div className="flex gap-2">
                         {project.links?.gitUrl && (
-                          <Button 
+                          <InteractiveButton 
                             size="sm" 
                             variant="outline" 
-                            asChild
+                            href={project.links.gitUrl} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            stopPropagation={true}
                           >
-                            <Link 
-                              href={project.links.gitUrl} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <Github className="h-4 w-4" />
-                            </Link>
-                          </Button>
+                            <Github className="h-4 w-4" />
+                          </InteractiveButton>
                         )}
                         {project.links?.liveUrl && (
-                          <Button 
+                          <InteractiveButton 
                             size="sm" 
-                            asChild
+                            href={project.links.liveUrl} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            stopPropagation={true}
                           >
-                            <Link 
-                              href={project.links.liveUrl} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <ExternalLink className="h-4 w-4" />
-                            </Link>
-                          </Button>
+                            <ExternalLink className="h-4 w-4" />
+                          </InteractiveButton>
                         )}
                       </div>
                     </div>
@@ -157,35 +149,27 @@ export default async function ProjectsPage() {
                     </span>
                     <div className="flex gap-2">
                       {project.links?.gitUrl && (
-                        <Button 
+                        <InteractiveButton 
                           size="sm" 
                           variant="outline" 
-                          asChild
+                          href={project.links.gitUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          stopPropagation={true}
                         >
-                          <Link 
-                            href={project.links.gitUrl} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <Github className="h-4 w-4" />
-                          </Link>
-                        </Button>
+                          <Github className="h-4 w-4" />
+                        </InteractiveButton>
                       )}
                       {project.links?.liveUrl && (
-                        <Button 
+                        <InteractiveButton 
                           size="sm" 
-                          asChild
+                          href={project.links.liveUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          stopPropagation={true}
                         >
-                          <Link 
-                            href={project.links.liveUrl} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <ExternalLink className="h-4 w-4" />
-                          </Link>
-                        </Button>
+                          <ExternalLink className="h-4 w-4" />
+                        </InteractiveButton>
                       )}
                     </div>
                   </div>
