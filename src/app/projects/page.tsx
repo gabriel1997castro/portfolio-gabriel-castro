@@ -1,24 +1,30 @@
-import { Metadata } from 'next'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { InteractiveButton } from "@/components/ui/interactive-button"
-import { Github, ExternalLink } from "lucide-react"
-import Link from "next/link"
-import { getProjects } from "@/lib/sanity/utils"
-import { urlFor } from "@/lib/sanity/client"
-import Image from "next/image"
+import { Metadata } from "next";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { InteractiveButton } from "@/components/ui/interactive-button";
+import { Github, ExternalLink } from "lucide-react";
+import Link from "next/link";
+import { getProjects } from "@/lib/sanity/utils";
+import { urlFor } from "@/lib/sanity/client";
+import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: 'Projects - Gabriel Castro',
-  description: 'Explore my portfolio of React and TypeScript projects',
-}
+  title: "Projects - Gabriel Castro",
+  description: "Explore my portfolio of React and TypeScript projects",
+};
 
 // Enable ISR with revalidation every 60 seconds
-export const revalidate = 60
+export const revalidate = 60;
 
 export default async function ProjectsPage() {
-  const projects = await getProjects()
-  
+  const projects = await getProjects();
+
   return (
     <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
       {/* Header */}
@@ -27,25 +33,34 @@ export default async function ProjectsPage() {
           Projects
         </h1>
         <p className="text-xl text-muted-foreground max-w-3xl">
-          A collection of projects I&apos;ve built using React, TypeScript, and modern web technologies. 
-          Each project represents my passion for creating efficient, scalable, and user-friendly applications.
+          A collection of projects I&apos;ve built using React, TypeScript, and
+          modern web technologies. Each project represents my passion for
+          creating efficient, scalable, and user-friendly applications.
         </p>
       </div>
 
       {/* Featured Projects */}
       <section className="mb-16">
-        <h2 className="text-2xl font-bold tracking-tight mb-6">Featured Projects</h2>
+        <h2 className="text-2xl font-bold tracking-tight mb-6">
+          Featured Projects
+        </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects
-            ?.filter(project => project.featured)
+            ?.filter((project) => project.featured)
             .map((project) => (
-              <Link key={project._id} href={`/projects/${project.slug.current}`}>
+              <Link
+                key={project._id}
+                href={`/projects/${project.slug.current}`}
+              >
                 <Card className="group hover:shadow-lg hover:scale-[1.02] transition-all duration-200 cursor-pointer h-full">
                   <CardHeader>
                     <div className="aspect-video bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg mb-4 relative overflow-hidden">
                       {project.images?.[0]?.image && (
                         <Image
-                          src={urlFor(project.images[0].image).width(400).height(225).url()}
+                          src={urlFor(project.images[0].image)
+                            .width(400)
+                            .height(225)
+                            .url()}
                           alt={project.images[0].caption || project.title}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -61,26 +76,30 @@ export default async function ProjectsPage() {
                     <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
                       {project.summary}
                     </p>
-                    
+
                     <div className="flex flex-wrap gap-2 mb-4">
                       {project.tech?.map((tech) => (
-                        <Badge key={tech} variant="secondary" className="text-xs">
+                        <Badge
+                          key={tech}
+                          variant="secondary"
+                          className="text-xs"
+                        >
                           {tech}
                         </Badge>
                       ))}
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-muted-foreground">
                         {project.year}
                       </span>
                       <div className="flex gap-2">
                         {project.links?.gitUrl && (
-                          <InteractiveButton 
-                            size="sm" 
-                            variant="outline" 
-                            href={project.links.gitUrl} 
-                            target="_blank" 
+                          <InteractiveButton
+                            size="sm"
+                            variant="outline"
+                            href={project.links.gitUrl}
+                            target="_blank"
                             rel="noopener noreferrer"
                             stopPropagation={true}
                           >
@@ -88,10 +107,10 @@ export default async function ProjectsPage() {
                           </InteractiveButton>
                         )}
                         {project.links?.liveUrl && (
-                          <InteractiveButton 
-                            size="sm" 
-                            href={project.links.liveUrl} 
-                            target="_blank" 
+                          <InteractiveButton
+                            size="sm"
+                            href={project.links.liveUrl}
+                            target="_blank"
                             rel="noopener noreferrer"
                             stopPropagation={true}
                           >
@@ -118,7 +137,10 @@ export default async function ProjectsPage() {
                   <div className="aspect-video bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg mb-4 relative overflow-hidden">
                     {project.images?.[0]?.image && (
                       <Image
-                        src={urlFor(project.images[0].image).width(400).height(225).url()}
+                        src={urlFor(project.images[0].image)
+                          .width(400)
+                          .height(225)
+                          .url()}
                         alt={project.images[0].caption || project.title}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -134,7 +156,7 @@ export default async function ProjectsPage() {
                   <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
                     {project.summary}
                   </p>
-                  
+
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.tech?.map((tech) => (
                       <Badge key={tech} variant="secondary" className="text-xs">
@@ -142,18 +164,18 @@ export default async function ProjectsPage() {
                       </Badge>
                     ))}
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">
                       {project.year}
                     </span>
                     <div className="flex gap-2">
                       {project.links?.gitUrl && (
-                        <InteractiveButton 
-                          size="sm" 
-                          variant="outline" 
-                          href={project.links.gitUrl} 
-                          target="_blank" 
+                        <InteractiveButton
+                          size="sm"
+                          variant="outline"
+                          href={project.links.gitUrl}
+                          target="_blank"
                           rel="noopener noreferrer"
                           stopPropagation={true}
                         >
@@ -161,10 +183,10 @@ export default async function ProjectsPage() {
                         </InteractiveButton>
                       )}
                       {project.links?.liveUrl && (
-                        <InteractiveButton 
-                          size="sm" 
-                          href={project.links.liveUrl} 
-                          target="_blank" 
+                        <InteractiveButton
+                          size="sm"
+                          href={project.links.liveUrl}
+                          target="_blank"
                           rel="noopener noreferrer"
                           stopPropagation={true}
                         >
@@ -180,5 +202,5 @@ export default async function ProjectsPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }
