@@ -1,71 +1,74 @@
-import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { ArrowLeft, Calendar, Share2 } from "lucide-react"
-import Link from "next/link"
-import { getPostBySlug, getPosts, getPostSlugs } from "@/lib/sanity/utils"
-import { PortableText } from '@portabletext/react'
-import { portableTextComponents } from '@/components/portable-text-components'
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, Calendar, Share2 } from "lucide-react";
+import Link from "next/link";
+import { getPostBySlug, getPosts, getPostSlugs } from "@/lib/sanity/utils";
+import { PortableText } from "@portabletext/react";
+import { portableTextComponents } from "@/components/portable-text-components";
 
 interface BlogPostPageProps {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string }>;
 }
 
 // Enable ISR with revalidation every 60 seconds
-export const revalidate = 60
+export const revalidate = 60;
 
 export async function generateStaticParams() {
-  const posts = await getPostSlugs()
+  const posts = await getPostSlugs();
   return posts.map((post) => ({
     slug: post.slug.current,
-  }))
+  }));
 }
 
-export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
-  const { slug } = await params
-  const post = await getPostBySlug(slug)
-  
+export async function generateMetadata({
+  params,
+}: BlogPostPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
+
   if (!post) {
     return {
-      title: 'Post Not Found',
-    }
+      title: "Post Not Found",
+    };
   }
 
   return {
     title: `${post.title} - Gabriel Castro`,
     description: post.excerpt,
-  }
+  };
 }
 
 function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const { slug } = await params
-  const post = await getPostBySlug(slug)
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
 
   if (!post) {
-    notFound()
+    notFound();
   }
 
   // Get related posts
-  const allPosts = await getPosts()
-  const relatedPosts = allPosts
-    ?.filter(p => p.slug.current !== post.slug.current)
-    .filter(p => p.tags?.some(tag => post.tags?.includes(tag)))
-    .slice(0, 2) || []
+  const allPosts = await getPosts();
+  const relatedPosts =
+    allPosts
+      ?.filter((p) => p.slug.current !== post.slug.current)
+      .filter((p) => p.tags?.some((tag) => post.tags?.includes(tag)))
+      .slice(0, 2) || [];
 
   return (
-    <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8 max-w-7xl">
+    <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8 max-w-6xl">
       {/* Back Navigation */}
-      <div className="mb-8">
+      <div className="mb-8 ml-4">
         <Button variant="ghost" asChild className="h-auto py-2 px-3">
           <Link href="/blog">
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -74,7 +77,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </Button>
       </div>
 
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         {/* Article Header */}
         <header className="mb-8 md:mb-12">
           <div className="flex flex-wrap items-center gap-2 md:gap-4 mb-4 text-sm text-muted-foreground">
@@ -91,15 +94,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </>
             )}
           </div>
-          
+
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 md:mb-6 font-display leading-tight">
             {post.title}
           </h1>
-          
+
           <p className="text-lg md:text-xl text-muted-foreground mb-4 md:mb-6 leading-relaxed">
             {post.excerpt}
           </p>
-          
+
           <div className="flex flex-wrap gap-2 mb-4 md:mb-6">
             {post.tags?.map((tag) => (
               <Badge key={tag} variant="secondary" className="text-xs">
@@ -121,7 +124,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <article className="lg:col-span-3 min-w-0">
             {post.body ? (
               <div className="prose prose-sm sm:prose prose-invert lg:prose-lg xl:prose-xl max-w-none prose-headings:font-display prose-h2:text-xl sm:prose-h2:text-2xl prose-h3:text-lg sm:prose-h3:text-xl prose-pre:max-w-full prose-pre:overflow-x-auto">
-                <PortableText value={post.body} components={portableTextComponents} />
+                <PortableText
+                  value={post.body}
+                  components={portableTextComponents}
+                />
               </div>
             ) : (
               <div className="prose prose-sm sm:prose prose-invert lg:prose-lg max-w-none">
@@ -140,16 +146,28 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </CardHeader>
                 <CardContent>
                   <nav className="space-y-2 text-sm">
-                    <Link href="#understanding" className="block text-muted-foreground hover:text-foreground transition-colors">
+                    <Link
+                      href="#understanding"
+                      className="block text-muted-foreground hover:text-foreground transition-colors"
+                    >
                       Understanding React&apos;s Rendering
                     </Link>
-                    <Link href="#optimization" className="block text-muted-foreground hover:text-foreground transition-colors">
+                    <Link
+                      href="#optimization"
+                      className="block text-muted-foreground hover:text-foreground transition-colors"
+                    >
                       Optimization Techniques
                     </Link>
-                    <Link href="#bundle" className="block text-muted-foreground hover:text-foreground transition-colors">
+                    <Link
+                      href="#bundle"
+                      className="block text-muted-foreground hover:text-foreground transition-colors"
+                    >
                       Bundle Optimization
                     </Link>
-                    <Link href="#measuring" className="block text-muted-foreground hover:text-foreground transition-colors">
+                    <Link
+                      href="#measuring"
+                      className="block text-muted-foreground hover:text-foreground transition-colors"
+                    >
                       Measuring Performance
                     </Link>
                   </nav>
@@ -165,13 +183,21 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     </div>
                     <div>
                       <h4 className="font-semibold">Gabriel Castro</h4>
-                      <p className="text-sm text-muted-foreground">Senior Frontend Engineer</p>
+                      <p className="text-sm text-muted-foreground">
+                        Senior Frontend Engineer
+                      </p>
                     </div>
                   </div>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Passionate about React, TypeScript, and building performant web applications.
+                    Passionate about React, TypeScript, and building performant
+                    web applications.
                   </p>
-                  <Button variant="outline" size="sm" className="w-full" asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                    asChild
+                  >
                     <Link href="/contact">Get in Touch</Link>
                   </Button>
                 </CardContent>
@@ -219,13 +245,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <div className="text-center">
               <h3 className="text-xl font-semibold mb-2">Stay Updated</h3>
               <p className="text-muted-foreground mb-6">
-                Get notified when I publish new articles about React, TypeScript, and frontend development.
+                Get notified when I publish new articles about React,
+                TypeScript, and frontend development.
               </p>
               <div className="flex gap-4 max-w-md mx-auto">
                 <Button className="flex-1" asChild>
-                  <Link href="/contact">
-                    Subscribe to Updates
-                  </Link>
+                  <Link href="/contact">Subscribe to Updates</Link>
                 </Button>
               </div>
             </div>
@@ -233,5 +258,5 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </Card>
       </div>
     </div>
-  )
+  );
 }

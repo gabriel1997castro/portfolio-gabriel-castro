@@ -220,7 +220,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Project Details */}
-          <Card>
+          <Card className="lg:mt-[47px]">
             <CardHeader>
               <CardTitle>Project Details</CardTitle>
             </CardHeader>
