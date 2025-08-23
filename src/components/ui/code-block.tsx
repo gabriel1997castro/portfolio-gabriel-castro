@@ -1,11 +1,11 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useLayoutEffect, JSX } from 'react'
 import { Button } from './button'
 import { Badge } from './badge'
 import { Copy, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { codeToHtml } from 'shiki'
+import { highlight } from '@/lib/highlight'
 
 interface CodeBlockProps {
   code: string
@@ -13,46 +13,40 @@ interface CodeBlockProps {
   title?: string
   showLineNumbers?: boolean
   className?: string
+  initial?: JSX.Element
 }
 
 export function CodeBlock({ 
   code, 
-  language = 'text', 
+  language = 'javascript', 
   title, 
   showLineNumbers = false,
-  className 
+  className,
+  initial
 }: CodeBlockProps) {
   const [copied, setCopied] = useState(false)
-  const [highlightedCode, setHighlightedCode] = useState<string>('')
-  const [isLoading, setIsLoading] = useState(true)
+  const [highlightedNode, setHighlightedNode] = useState<JSX.Element | null>(initial || null)
+  const [isLoading, setIsLoading] = useState(!initial)
 
-  useEffect(() => {
-    async function highlightCode() {
-      try {
-        setIsLoading(true)
-        const html = await codeToHtml(code, {
-          lang: language,
-          theme: 'github-dark',
-          transformers: showLineNumbers ? [
-            {
-              line(node, line) {
-                node.properties['data-line'] = line
-              }
-            }
-          ] : undefined
+  useLayoutEffect(() => {
+    if (!initial) {
+      setIsLoading(true)
+      void highlight(code, language, 'github-dark')
+        .then(setHighlightedNode)
+        .catch((error) => {
+          console.error('Error highlighting code:', error)
+          // Fallback to plain text
+          setHighlightedNode(
+            <pre className="!bg-transparent !border-0 !p-0 !m-0 !font-mono !text-sm !leading-relaxed overflow-x-auto">
+              <code className="!bg-transparent !p-0 !font-mono !text-sm !leading-relaxed">
+                {code}
+              </code>
+            </pre>
+          )
         })
-        setHighlightedCode(html)
-      } catch (error) {
-        console.error('Error highlighting code:', error)
-        // Fallback to plain text
-        setHighlightedCode(`<pre><code>${code}</code></pre>`)
-      } finally {
-        setIsLoading(false)
-      }
+        .finally(() => setIsLoading(false))
     }
-
-    highlightCode()
-  }, [code, language, showLineNumbers])
+  }, [code, language, initial])
 
   const copyToClipboard = async () => {
     try {
@@ -132,16 +126,12 @@ export function CodeBlock({
 
       {/* Code content with improved mobile scrolling */}
       <div className="relative overflow-x-auto scrollbar-thin scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent">
-        <div 
-          className={cn(
-            "p-3 sm:p-4 text-xs sm:text-sm leading-relaxed",
-            "[&>pre]:!bg-transparent [&>pre]:!border-0 [&>pre]:!p-0 [&>pre]:!m-0",
-            "[&>pre>code]:!bg-transparent [&>pre>code]:!p-0 [&>pre>code]:!text-xs [&>pre>code]:sm:!text-sm",
-            "[&>pre>code]:!font-mono [&>pre>code]:!leading-relaxed",
-            showLineNumbers && "sm:[&>pre]:pl-12"
-          )}
-          dangerouslySetInnerHTML={{ __html: highlightedCode }}
-        />
+        <div className={cn(
+          "p-3 sm:p-4 text-xs sm:text-sm leading-relaxed",
+          showLineNumbers && "sm:pl-12"
+        )}>
+          {highlightedNode}
+        </div>
         
         {/* Line numbers overlay - hidden on mobile for better readability */}
         {showLineNumbers && (
