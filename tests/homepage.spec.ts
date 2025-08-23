@@ -65,8 +65,12 @@ test("featured projects are displayed on homepage", async ({ page }) => {
 
   // Check that project cards are displayed (wait for content to load)
   await expect(page.getByText("ShowSeeker Pilot")).toBeVisible();
-  await expect(page.getByText("Insurance Fast Quote")).toBeVisible();
-  await expect(page.getByText("Healthcare Hub")).toBeVisible();
+  await expect(
+    page.getByText("Streamlined insurance quote experience")
+  ).toBeVisible();
+  await expect(
+    page.getByText("FHIR-compliant healthcare system")
+  ).toBeVisible();
 });
 
 test("project detail page loads correctly", async ({ page }) => {
@@ -92,7 +96,7 @@ test("mobile navigation works", async ({ page }) => {
 
   // Mobile menu should not be visible initially
   await expect(
-    page.getByRole("link", { name: "Projects" }).first()
+    page.getByRole("link", { name: "Projects", exact: true }).first()
   ).not.toBeVisible();
 
   // Click the mobile menu button
