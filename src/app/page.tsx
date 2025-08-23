@@ -102,10 +102,14 @@ export default async function Home() {
                       <Button 
                         size="sm" 
                         variant="outline" 
-                        asChild 
-                        onClickCapture={(e) => e.stopPropagation()}
+                        asChild
                       >
-                        <Link href={project.links.gitUrl} target="_blank" rel="noopener noreferrer">
+                        <Link 
+                          href={project.links.gitUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                        >
                           <Github className="h-4 w-4 mr-2" />
                           Code
                         </Link>
@@ -114,10 +118,14 @@ export default async function Home() {
                     {project.links?.liveUrl && (
                       <Button 
                         size="sm" 
-                        asChild 
-                        onClickCapture={(e) => e.stopPropagation()}
+                        asChild
                       >
-                        <Link href={project.links.liveUrl} target="_blank" rel="noopener noreferrer">
+                        <Link 
+                          href={project.links.liveUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                        >
                           <ExternalLink className="h-4 w-4 mr-2" />
                           Live Demo
                         </Link>
