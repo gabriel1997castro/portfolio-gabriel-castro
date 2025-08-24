@@ -97,10 +97,10 @@ export default async function ExperiencePage() {
                           )}
                         </div>
                         <div>
-                          <CardTitle className="text-xl mb-1">
+                          <CardTitle className="text-lg sm:text-xl mb-1">
                             {job.role}
                           </CardTitle>
-                          <CardDescription className="text-lg font-medium text-foreground">
+                          <CardDescription className="text-base sm:text-lg font-medium text-foreground">
                             {job.company}
                           </CardDescription>
                         </div>
