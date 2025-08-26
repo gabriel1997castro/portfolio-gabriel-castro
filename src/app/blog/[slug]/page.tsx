@@ -5,10 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calendar, Share2 } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
-import { getPostBySlug, getPosts, getPostSlugs } from "@/lib/sanity/utils";
+import { getPostBySlug, getPosts, getPostSlugs, getSiteSettings } from "@/lib/sanity/utils";
 import { PortableText } from "@portabletext/react";
 import { portableTextComponents } from "@/components/portable-text-components";
+import { TableOfContents } from "@/components/blog/table-of-contents";
+import { PostAuthor } from "@/components/blog/post-author";
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -58,8 +59,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
-  // Get related posts
-  const allPosts = await getPosts();
+  // Get related posts and site settings
+  const [allPosts, siteSettings] = await Promise.all([
+    getPosts(),
+    getSiteSettings()
+  ]);
+  
   const relatedPosts =
     allPosts
       ?.filter((p) => p.slug.current !== post.slug.current)
@@ -140,73 +145,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {/* Sidebar */}
           <aside className="lg:col-span-1 order-first lg:order-last">
             <div className="lg:sticky lg:top-24 space-y-4 lg:space-y-6">
-              {/* Table of Contents */}
-              <Card>
-                <CardHeader>
-                  <h3 className="font-semibold">Table of Contents</h3>
-                </CardHeader>
-                <CardContent>
-                  <nav className="space-y-2 text-sm">
-                    <Link
-                      href="#understanding"
-                      className="block text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      Understanding React&apos;s Rendering
-                    </Link>
-                    <Link
-                      href="#optimization"
-                      className="block text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      Optimization Techniques
-                    </Link>
-                    <Link
-                      href="#bundle"
-                      className="block text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      Bundle Optimization
-                    </Link>
-                    <Link
-                      href="#measuring"
-                      className="block text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      Measuring Performance
-                    </Link>
-                  </nav>
-                </CardContent>
-              </Card>
+              {/* Dynamic Table of Contents */}
+              {post.body && <TableOfContents content={post.body} />}
 
-              {/* Author */}
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <Image
-                      src="/images/gabriel-castro.jpg"
-                      alt="Gabriel Castro"
-                      width={48}
-                      height={48}
-                      className="rounded-full object-cover"
-                    />
-                    <div>
-                      <h4 className="font-semibold">Gabriel Castro</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Frontend Engineer
-                      </p>
-                    </div>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Passionate about React, TypeScript, and building performant
-                    web applications.
-                  </p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full"
-                    asChild
-                  >
-                    <Link href="/contact">Get in Touch</Link>
-                  </Button>
-                </CardContent>
-              </Card>
+              {/* Dynamic Author */}
+              <PostAuthor siteSettings={siteSettings} />
 
               {/* Related Posts */}
               {relatedPosts.length > 0 && (

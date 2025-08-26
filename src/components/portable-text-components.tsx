@@ -2,6 +2,7 @@ import { PortableTextComponents } from "@portabletext/react";
 import { CodeBlock } from "@/components/ui/code-block";
 import Image from "next/image";
 import { urlFor } from "@/lib/sanity/client";
+import { generateHeadingId } from "@/lib/heading-utils";
 
 // Custom components for PortableText rendering
 export const portableTextComponents: PortableTextComponents = {
@@ -78,26 +79,42 @@ export const portableTextComponents: PortableTextComponents = {
     ),
 
     // Enhanced heading styles with responsive sizing
-    h1: ({ children }) => (
-      <h1 className="scroll-m-20 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mt-8 md:mt-12 mb-4 md:mb-6 font-display leading-tight">
-        {children}
-      </h1>
-    ),
-    h2: ({ children }) => (
-      <h2 className="scroll-m-20 text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight mt-6 md:mt-10 mb-3 md:mb-4 font-display leading-tight">
-        {children}
-      </h2>
-    ),
-    h3: ({ children }) => (
-      <h3 className="scroll-m-20 text-lg sm:text-xl md:text-2xl font-semibold tracking-tight mt-5 md:mt-8 mb-2 md:mb-3 font-display leading-tight">
-        {children}
-      </h3>
-    ),
-    h4: ({ children }) => (
-      <h4 className="scroll-m-20 text-base sm:text-lg md:text-xl font-semibold tracking-tight mt-4 md:mt-6 mb-2 font-display leading-tight">
-        {children}
-      </h4>
-    ),
+    h1: ({ children }) => {
+      const text = Array.isArray(children) ? children.join('') : String(children || '')
+      const id = generateHeadingId(text)
+      return (
+        <h1 id={id} className="scroll-m-20 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mt-8 md:mt-12 mb-4 md:mb-6 font-display leading-tight">
+          {children}
+        </h1>
+      )
+    },
+    h2: ({ children }) => {
+      const text = Array.isArray(children) ? children.join('') : String(children || '')
+      const id = generateHeadingId(text)
+      return (
+        <h2 id={id} className="scroll-m-20 text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight mt-6 md:mt-10 mb-3 md:mb-4 font-display leading-tight">
+          {children}
+        </h2>
+      )
+    },
+    h3: ({ children }) => {
+      const text = Array.isArray(children) ? children.join('') : String(children || '')
+      const id = generateHeadingId(text)
+      return (
+        <h3 id={id} className="scroll-m-20 text-lg sm:text-xl md:text-2xl font-semibold tracking-tight mt-5 md:mt-8 mb-2 md:mb-3 font-display leading-tight">
+          {children}
+        </h3>
+      )
+    },
+    h4: ({ children }) => {
+      const text = Array.isArray(children) ? children.join('') : String(children || '')
+      const id = generateHeadingId(text)
+      return (
+        <h4 id={id} className="scroll-m-20 text-base sm:text-lg md:text-xl font-semibold tracking-tight mt-4 md:mt-6 mb-2 font-display leading-tight">
+          {children}
+        </h4>
+      )
+    },
   },
 
   list: {
