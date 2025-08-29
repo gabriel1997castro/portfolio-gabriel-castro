@@ -28,6 +28,7 @@ export default async function Home() {
     getFeaturedProjects(),
     getFeaturedPosts(),
   ]);
+
   return (
     <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
       {/* Hero Section */}
@@ -37,8 +38,15 @@ export default async function Home() {
           <div className="flex-shrink-0">
             <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto lg:mx-0">
               <Image
-                src="/images/gabriel-castro.jpg"
-                alt="Gabriel Castro - Frontend Engineer"
+                src={
+                  siteSettings?.avatar?.asset
+                    ? urlFor(siteSettings.avatar.asset)
+                        .width(512)
+                        .height(512)
+                        .url()
+                    : "/images/gabriel-castro.jpg"
+                }
+                alt={`${siteSettings?.name || "Gabriel Castro"} - ${siteSettings?.title || "Frontend Engineer"}`}
                 fill
                 className="rounded-full object-cover border-4 border-white/10 shadow-2xl"
                 priority
