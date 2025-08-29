@@ -83,7 +83,7 @@ export default async function ExperiencePage() {
                   <CardHeader>
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center relative overflow-hidden">
+                        <div className="w-12!important h-12!important bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center relative overflow-hidden">
                           {job.logo ? (
                             <Image
                               src={urlFor(job.logo).width(48).height(48).url()}
