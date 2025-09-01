@@ -2,7 +2,7 @@
 
 A modern, production-ready portfolio website built with Next.js 14, Sanity CMS, and TypeScript. Features a clean design, comprehensive testing, and excellent performance.
 
-![Gabriel Castro Portfolio](https://placehold.co/1200x630/1a1a1a/white?text=Gabriel+Castro+Portfolio)
+![Gabriel Castro Portfolio](/public/images/image.png)
 
 ## 🚀 Features
 
@@ -37,22 +37,26 @@ src/
 ## 🛠 Tech Stack
 
 ### Core
+
 - **Framework**: [Next.js 14](https://nextjs.org/) with App Router
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 - **UI Components**: [shadcn/ui](https://ui.shadcn.com/)
 
 ### CMS & Content
+
 - **CMS**: [Sanity v3](https://www.sanity.io/)
 - **Animations**: [Framer Motion](https://www.framer.com/motion/)
 - **Icons**: [Lucide React](https://lucide.dev/)
 
 ### Testing & Quality
+
 - **Unit Testing**: [Vitest](https://vitest.dev/) + [React Testing Library](https://testing-library.com/)
 - **E2E Testing**: [Playwright](https://playwright.dev/)
 - **Linting**: [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/)
 
 ### Deployment
+
 - **Platform**: [Vercel](https://vercel.com/)
 - **CI/CD**: GitHub Actions
 
@@ -66,33 +70,38 @@ src/
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/gabriel1997castro/portfolio-gabriel-castro.git
    cd portfolio-gabriel-castro
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
+
    ```bash
    cp .env.example .env.local
    ```
-   
+
    Update `.env.local` with your values:
+
    ```env
    # Sanity
    NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
    NEXT_PUBLIC_SANITY_DATASET=production
    SANITY_READ_TOKEN=your_read_token
-   
+
    # Site URL
    NEXT_PUBLIC_SITE_URL=http://localhost:3000
    ```
 
 4. **Start the development server**
+
    ```bash
    npm run dev
    ```
@@ -114,6 +123,7 @@ The Sanity Studio is available at `/studio` and provides a user-friendly interfa
 ### Setting Up Sanity
 
 1. **Create a Sanity project**
+
    ```bash
    npm create sanity@latest
    ```
@@ -129,6 +139,7 @@ The Sanity Studio is available at `/studio` and provides a user-friendly interfa
 ## 🧪 Testing
 
 ### Unit Tests
+
 ```bash
 # Run all unit tests
 npm run test
@@ -141,6 +152,7 @@ npm run test:ui
 ```
 
 ### E2E Tests
+
 ```bash
 # Run E2E tests
 npm run e2e
