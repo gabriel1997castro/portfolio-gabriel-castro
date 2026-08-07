@@ -10,6 +10,9 @@ export function Footer() {
             <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} Gabriel Castro. All rights reserved.
             </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              G. G. A. de Castro — CNPJ 46.955.037/0001-74
+            </p>
           </div>
           
           <div className="flex space-x-4">
