@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://gabriel-castro-portfolio.vercel.app'
+  // NEXT_PUBLIC_SITE_URL may carry a trailing slash; strip it so URLs don't come out with `//`
+  const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://gabriel-castro-portfolio.vercel.app').replace(/\/$/, '')
 
   return [
     {
@@ -39,6 +40,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/mindrack/privacidade`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.5,
     },
   ]
 }
