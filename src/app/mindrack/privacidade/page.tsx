@@ -339,7 +339,7 @@ export default function MindRackPrivacyPage() {
 
           <P>
             You can delete your account at any time via{" "}
-            <B>About → Account → Delete account</B>. Deletion is immediate and
+            <B>Settings → Account → Delete account</B>. Deletion is immediate and
             removes all server-side data. Local progress remains on your device.
           </P>
 
