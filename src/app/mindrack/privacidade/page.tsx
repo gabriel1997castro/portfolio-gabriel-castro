@@ -83,10 +83,10 @@ function B({ children }: { children: React.ReactNode }) {
 function MailLink() {
   return (
     <Link
-      href="mailto:gabriel1997.castro@gmail.com"
+      href="mailto:mindrackapp@gmail.com"
       className="font-semibold text-foreground underline underline-offset-4 hover:text-primary transition-colors"
     >
-      gabriel1997.castro@gmail.com
+      mindrackapp@gmail.com
     </Link>
   );
 }
