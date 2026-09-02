@@ -91,54 +91,8 @@ function MailLink() {
   );
 }
 
-/* Horizontally scrollable on small screens so the table never widens the page. */
-function DataTable() {
-  const rows: [React.ReactNode, string][] = [
-    [<B key="e">E-mail</B>, "Criar conta, login, recuperação de senha"],
-    [
-      <span key="s">
-        <B>Senha</B> (armazenada como hash pelo Supabase; nunca em texto)
-      </span>,
-      "Autenticação",
-    ],
-    [
-      <span key="a">
-        <B>Apelido</B> (escolhido por você)
-      </span>,
-      "Exibido no ranking",
-    ],
-    [
-      <span key="em">
-        <B>Emoji</B> (escolhido por você)
-      </span>,
-      "Avatar no ranking",
-    ],
-    [
-      <span key="p">
-        <B>Pontuações do Desafio do Dia</B> (estrelas + tempo)
-      </span>,
-      "Ranking diário e semanal",
-    ],
-    [
-      <span key="st">
-        <B>Estatísticas</B> (total de estrelas e fases concluídas)
-      </span>,
-      "Ranking geral",
-    ],
-    [
-      <span key="bk">
-        <B>Backup do progresso</B> (JSON criptografado)
-      </span>,
-      "Restaurar em outro aparelho",
-    ],
-    [
-      <span key="dt">
-        <B>Data do último acesso</B> (apenas a data, máx. 1×/dia)
-      </span>,
-      "Métrica interna de retenção",
-    ],
-  ];
-
+/* Horizontally scrollable on small screens so tables never widen the page. */
+function DataTable({ rows }: { rows: [React.ReactNode, string][] }) {
   return (
     <div className="my-6 w-full overflow-x-auto rounded-xl border">
       <table className="w-full min-w-[34rem] border-collapse text-sm">
@@ -165,6 +119,71 @@ function DataTable() {
   );
 }
 
+const subscriptionRows: [React.ReactNode, string][] = [
+  [
+    <span key="recibo">
+      <B>Recibo da compra</B> (produto, datas, status), enviado pela loja
+    </span>,
+    "Reconhecer a assinatura e liberar o conteúdo",
+  ],
+  [
+    <span key="anon">
+      <B>Identificador anônimo de usuário</B> gerado pelo RevenueCat
+    </span>,
+    "Ligar a assinatura ao aparelho e permitir restaurar a compra",
+  ],
+  [
+    <span key="conta">
+      <B>Id da sua conta MindRack</B>, se você tiver criado uma
+    </span>,
+    "Fazer a assinatura acompanhar você na troca de aparelho",
+  ],
+];
+
+const accountRows: [React.ReactNode, string][] = [
+  [<B key="e">E-mail</B>, "Criar conta, login, recuperação de senha"],
+  [
+    <span key="s">
+      <B>Senha</B> (armazenada como hash pelo Supabase; nunca em texto)
+    </span>,
+    "Autenticação",
+  ],
+  [
+    <span key="a">
+      <B>Apelido</B> (escolhido por você)
+    </span>,
+    "Exibido no ranking",
+  ],
+  [
+    <span key="em">
+      <B>Emoji</B> (escolhido por você)
+    </span>,
+    "Avatar no ranking",
+  ],
+  [
+    <span key="p">
+      <B>Pontuações do Desafio do Dia</B> (estrelas + tempo)
+    </span>,
+    "Ranking diário e semanal",
+  ],
+  [
+    <span key="st">
+      <B>Estatísticas</B> (total de estrelas e fases concluídas)
+    </span>,
+    "Ranking geral",
+  ],
+  [
+    <B key="bk">Backup do progresso e do histórico de partidas</B>,
+    "Restaurar em outro aparelho",
+  ],
+  [
+    <span key="dt">
+      <B>Data do último acesso</B> (apenas a data, máx. 1×/dia)
+    </span>,
+    "Métrica interna de retenção",
+  ],
+];
+
 export default function MindRackPrivacyPage() {
   return (
     <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8 max-w-6xl">
@@ -176,7 +195,7 @@ export default function MindRackPrivacyPage() {
               Política de Privacidade — MindRack
             </h1>
             <p className="text-sm text-muted-foreground">
-              <B>Última atualização:</B> 22 de julho de 2026
+              <B>Última atualização:</B> 12 de agosto de 2026
             </p>
           </header>
 
@@ -204,13 +223,77 @@ export default function MindRackPrivacyPage() {
                 pessoal</B>;
               </li>
               <li>
-                salva o progresso <B>apenas no seu aparelho</B> (AsyncStorage);
+                salva o progresso e o <B>histórico de partidas</B> (data, jogo,
+                fase, duração, estrelas, erros, jogadas e dicas){" "}
+                <B>apenas no seu aparelho</B> (AsyncStorage);
               </li>
               <li>
                 pode ser apagado a qualquer momento em{" "}
                 <B>Ajustes → Apagar todo o progresso</B> ou desinstalando o app.
               </li>
             </UL>
+          </Section>
+
+          <Section id="assinatura-premium">
+            <H2>Assinatura MindRack Premium</H2>
+            <P>
+              A assinatura é <B>opcional</B>: as fases 1–10 de cada jogo, o
+              Desafio do Dia, o ranking, a conta e o backup continuam gratuitos.
+            </P>
+
+            <P>
+              Quando você assina, a{" "}
+              <B>cobrança é feita pela App Store ou pelo Google Play</B> — o
+              MindRack <B>nunca vê nem armazena</B> dados de pagamento, número de
+              cartão ou endereço de cobrança.
+            </P>
+
+            <P>
+              Para saber se a sua assinatura está ativa, usamos o{" "}
+              <B>RevenueCat</B> (
+              <Link
+                href="https://www.revenuecat.com/privacy"
+                className="text-foreground underline underline-offset-4 hover:text-primary transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                política deles
+              </Link>
+              ), que trata os recibos das lojas em nosso nome:
+            </P>
+
+            <DataTable rows={subscriptionRows} />
+
+            <P>
+              Não enviamos ao RevenueCat o seu e-mail, o seu apelido nem o seu
+              progresso.
+            </P>
+
+            <P>
+              O último estado conhecido da assinatura fica guardado{" "}
+              <B>no aparelho</B> para o app continuar funcionando sem internet.
+            </P>
+
+            <P>
+              <B>Base legal (LGPD):</B> execução de contrato.
+            </P>
+          </Section>
+
+          <Section id="medicao-de-uso">
+            <H2>Medição de uso</H2>
+            <P>
+              O app conta, <B>apenas no seu aparelho</B>, quantas vezes certas
+              coisas aconteceram — abrir o app, concluir uma fase, ver o paywall,
+              iniciar um teste, comprar, restaurar. São{" "}
+              <B>contadores anônimos</B>: não há e-mail, apelido, identificador de
+              usuário nem de aparelho, e <B>nada é enviado pela internet</B>.
+              Servem para entender o produto e podem ser apagados junto com o
+              progresso.
+            </P>
+
+            <P>
+              Não usamos SDK de publicidade, de rastreamento nem de perfil.
+            </P>
           </Section>
 
           <Section id="com-conta">
@@ -220,7 +303,7 @@ export default function MindRackPrivacyPage() {
               servidor (Supabase):
             </P>
 
-            <DataTable />
+            <DataTable rows={accountRows} />
 
             <P>
               Login alternativo por código por e-mail (sem senha) está disponível
@@ -253,13 +336,21 @@ export default function MindRackPrivacyPage() {
             <H2>O que o app NÃO faz</H2>
             <UL>
               <li>Não exibe anúncios;</li>
-              <li>Não usa cookies, analytics ou SDKs de terceiros de rastreamento;</li>
-              <li>Não realiza compras dentro do app (versão atual);</li>
+              <li>Não usa cookies, SDKs de rastreamento nem publicidade;</li>
+              <li>
+                Não vê nem armazena dados de pagamento — quem cobra é a loja;
+              </li>
               <li>
                 Não acessa câmera, microfone, fotos ou qualquer permissão
                 sensível;
               </li>
-              <li>Não compartilha dados com terceiros para fins publicitários.</li>
+              <li>Não compartilha dados com terceiros para fins publicitários;</li>
+              <li>Não apaga o seu progresso quando a assinatura termina;</li>
+              <li>
+                Não afirma que o app melhora memória, atenção, QI ou qualquer
+                capacidade fora dele. As métricas de desempenho descrevem{" "}
+                <B>os jogos do MindRack</B>.
+              </li>
             </UL>
           </Section>
 
@@ -309,7 +400,7 @@ export default function MindRackPrivacyPage() {
               Privacy Policy — MindRack (English)
             </h2>
             <p className="text-sm text-muted-foreground">
-              <B>Last updated:</B> July 22, 2026
+              <B>Last updated:</B> August 12, 2026
             </p>
           </header>
 
@@ -322,7 +413,31 @@ export default function MindRackPrivacyPage() {
 
           <P>
             <B>Without an account:</B> the app does not collect, store, or share
-            any personal data. Progress is stored locally on your device only.
+            any personal data. Progress and your match history (date, game, level,
+            duration, stars, mistakes, moves and hints) are stored locally on your
+            device only.
+          </P>
+
+          <P>
+            <B>MindRack Premium (optional subscription):</B> billing is handled
+            entirely by the App Store or Google Play — we never see or store
+            payment details. To know whether your subscription is active we use{" "}
+            <B>RevenueCat</B>, which processes the store receipts on our behalf:
+            it receives the purchase receipt and an anonymous user identifier
+            (plus your MindRack account id, if you created one, so the
+            subscription follows you across devices). It never receives your
+            email, nickname or progress. The last known subscription status is
+            cached on your device so the app keeps working offline. Levels 1–10 of
+            every game, the Daily Challenge, the leaderboard, your account and
+            backup remain free, and no progress is ever deleted when a
+            subscription ends.
+          </P>
+
+          <P>
+            <B>Usage counters:</B> the app keeps anonymous counters on your device
+            (app opens, levels completed, paywall views, purchases, restores).
+            They contain no identifiers of any kind and are never sent over the
+            network.
           </P>
 
           <P>
@@ -344,9 +459,11 @@ export default function MindRackPrivacyPage() {
           </P>
 
           <P>
-            The app has no ads, no analytics, no third-party tracking SDKs, no
-            in-app purchases, and requests no sensitive permissions. Content is
-            suitable for all ages.
+            The app has no ads, no tracking SDKs and requests no sensitive
+            permissions. It offers an optional in-app subscription. Content is
+            suitable for all ages. Performance metrics describe how you do{" "}
+            <B>inside MindRack games</B>; the app makes no claim about memory,
+            attention, IQ or health.
           </P>
 
           <P>
