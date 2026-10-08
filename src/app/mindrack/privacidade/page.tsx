@@ -91,14 +91,39 @@ function MailLink() {
   );
 }
 
+function ExtLink({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className="text-foreground underline underline-offset-4 hover:text-primary transition-colors"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {children}
+    </Link>
+  );
+}
+
 /* Horizontally scrollable on small screens so tables never widen the page. */
-function DataTable({ rows }: { rows: [React.ReactNode, string][] }) {
+function DataTable({
+  rows,
+  dataHeader = "Dado",
+}: {
+  rows: [React.ReactNode, string][];
+  dataHeader?: string;
+}) {
   return (
     <div className="my-6 w-full overflow-x-auto rounded-xl border">
       <table className="w-full min-w-[34rem] border-collapse text-sm">
         <thead>
           <tr className="bg-muted/50">
-            <th className="px-4 py-3 text-left font-semibold">Dado</th>
+            <th className="px-4 py-3 text-left font-semibold">{dataHeader}</th>
             <th className="px-4 py-3 text-left font-semibold">Finalidade</th>
           </tr>
         </thead>
@@ -137,6 +162,30 @@ const subscriptionRows: [React.ReactNode, string][] = [
       <B>Id da sua conta MindRack</B>, se você tiver criado uma
     </span>,
     "Fazer a assinatura acompanhar você na troca de aparelho",
+  ],
+];
+
+const tiktokRows: [React.ReactNode, string][] = [
+  [
+    <span key="adid">
+      <B>ID de publicidade do Android</B> (se o aparelho permitir)
+    </span>,
+    "Ligar a instalação ao anúncio que a originou",
+  ],
+  [<B key="ref">Referenciador de instalação do Google Play</B>, "Idem"],
+  [
+    <span key="ev">
+      <B>Eventos do app</B>: instalação, abertura, retorno no dia seguinte e
+      compra da assinatura (produto, valor e moeda)
+    </span>,
+    "Medir o resultado das campanhas",
+  ],
+  [
+    <span key="tec">
+      <B>Dados técnicos do aparelho</B>: modelo, versão do sistema, idioma,
+      tamanho da tela, tipo de rede, endereço IP e versão do app
+    </span>,
+    "Funcionamento e combate a fraude da medição",
   ],
 ];
 
@@ -195,7 +244,7 @@ export default function MindRackPrivacyPage() {
               Política de Privacidade — MindRack
             </h1>
             <p className="text-sm text-muted-foreground">
-              <B>Última atualização:</B> 12 de agosto de 2026
+              <B>Última atualização:</B> 6 de outubro de 2026
             </p>
           </header>
 
@@ -212,6 +261,12 @@ export default function MindRackPrivacyPage() {
               conta é <B>opcional</B> e existe para quem quiser participar do
               ranking e ter backup automático na nuvem.
             </P>
+
+            <P>
+              No Android, o app usa o SDK do TikTok para medir se as nossas
+              campanhas no TikTok trazem instalações — veja a seção{" "}
+              <B>Medição de campanhas</B> abaixo.
+            </P>
           </Section>
 
           <Section id="sem-conta">
@@ -220,7 +275,8 @@ export default function MindRackPrivacyPage() {
             <UL>
               <li>
                 <B>não coleta, não armazena e não compartilha nenhum dado
-                pessoal</B>;
+                pessoal</B>, exceto, no Android, os dados de medição enviados ao
+                TikTok descritos abaixo;
               </li>
               <li>
                 salva o progresso e o <B>histórico de partidas</B> (data, jogo,
@@ -251,14 +307,9 @@ export default function MindRackPrivacyPage() {
             <P>
               Para saber se a sua assinatura está ativa, usamos o{" "}
               <B>RevenueCat</B> (
-              <Link
-                href="https://www.revenuecat.com/privacy"
-                className="text-foreground underline underline-offset-4 hover:text-primary transition-colors"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <ExtLink href="https://www.revenuecat.com/privacy">
                 política deles
-              </Link>
+              </ExtLink>
               ), que trata os recibos das lojas em nosso nome:
             </P>
 
@@ -290,9 +341,43 @@ export default function MindRackPrivacyPage() {
               Servem para entender o produto e podem ser apagados junto com o
               progresso.
             </P>
+          </Section>
+
+          <Section id="medicao-de-campanhas">
+            <H2>Medição de campanhas (TikTok, Android)</H2>
+            <P>
+              Divulgamos o MindRack com anúncios no TikTok. Para saber se esses
+              anúncios trazem instalações, a versão <B>Android</B> do app inclui
+              o <B>TikTok App Events SDK</B>, da TikTok (
+              <ExtLink href="https://www.tiktok.com/legal/page/row/privacy-policy/pt-BR">
+                política de privacidade
+              </ExtLink>{" "}
+              ·{" "}
+              <ExtLink href="https://ads.tiktok.com/i18n/official/policy/business-products-terms">
+                termos dos produtos empresariais
+              </ExtLink>
+              ). A versão iOS não inclui esse SDK.
+            </P>
+
+            <DataTable rows={tiktokRows} dataHeader="Dado enviado ao TikTok" />
 
             <P>
-              Não usamos SDK de publicidade, de rastreamento nem de perfil.
+              O SDK <B>não recebe</B> seu e-mail, apelido, conta MindRack nem
+              progresso nos jogos. Não exibimos anúncios dentro do app.
+            </P>
+
+            <P>
+              <B>Como limitar:</B> em{" "}
+              <B>Configurações do Android → Google → Anúncios</B>, você pode
+              apagar ou redefinir o ID de publicidade; sem ele, o TikTok deixa de
+              ligar o seu aparelho aos anúncios. Para pedidos sobre os dados que o
+              TikTok guarda, use os canais da política dele.
+            </P>
+
+            <P>
+              <B>Base legal (LGPD):</B> legítimo interesse — medir se a
+              divulgação do app funciona, sem montar perfil seu dentro do
+              MindRack.
             </P>
           </Section>
 
@@ -336,7 +421,10 @@ export default function MindRackPrivacyPage() {
             <H2>O que o app NÃO faz</H2>
             <UL>
               <li>Não exibe anúncios;</li>
-              <li>Não usa cookies, SDKs de rastreamento nem publicidade;</li>
+              <li>
+                Não usa cookies nem SDKs de publicidade dentro do app — o único
+                SDK de medição é o do TikTok, no Android, descrito acima;
+              </li>
               <li>
                 Não vê nem armazena dados de pagamento — quem cobra é a loja;
               </li>
@@ -344,7 +432,11 @@ export default function MindRackPrivacyPage() {
                 Não acessa câmera, microfone, fotos ou qualquer permissão
                 sensível;
               </li>
-              <li>Não compartilha dados com terceiros para fins publicitários;</li>
+              <li>
+                Não vende dados nem os compartilha com terceiros para fins
+                publicitários, além da medição de campanhas do TikTok descrita
+                acima;
+              </li>
               <li>Não apaga o seu progresso quando a assinatura termina;</li>
               <li>
                 Não afirma que o app melhora memória, atenção, QI ou qualquer
@@ -368,8 +460,9 @@ export default function MindRackPrivacyPage() {
           <Section id="criancas">
             <H2>Crianças</H2>
             <P>
-              O app não coleta dados de nenhum usuário sem conta, incluindo
-              crianças. O conteúdo é adequado para todas as idades (classificação
+              Sem conta, o app não coleta dados pessoais de nenhum usuário,
+              incluindo crianças, exceto a medição de campanhas do TikTok no
+              Android descrita acima. O conteúdo é adequado para todas as idades (classificação
               livre). A criação de conta (opcional) requer e-mail.
             </P>
           </Section>
@@ -400,7 +493,7 @@ export default function MindRackPrivacyPage() {
               Privacy Policy — MindRack (English)
             </h2>
             <p className="text-sm text-muted-foreground">
-              <B>Last updated:</B> August 12, 2026
+              <B>Last updated:</B> October 6, 2026
             </p>
           </header>
 
@@ -413,7 +506,8 @@ export default function MindRackPrivacyPage() {
 
           <P>
             <B>Without an account:</B> the app does not collect, store, or share
-            any personal data. Progress and your match history (date, game, level,
+            any personal data, except the TikTok campaign measurement described
+            below (Android only). Progress and your match history (date, game, level,
             duration, stars, mistakes, moves and hints) are stored locally on your
             device only.
           </P>
@@ -441,6 +535,25 @@ export default function MindRackPrivacyPage() {
           </P>
 
           <P>
+            <B>Campaign measurement (TikTok, Android only):</B> we promote
+            MindRack with ads on TikTok. To know whether those ads bring
+            installs, the Android app includes the{" "}
+            <B>TikTok App Events SDK</B> (
+            <ExtLink href="https://www.tiktok.com/legal/page/row/privacy-policy/en">
+              TikTok privacy policy
+            </ExtLink>
+            ). It sends TikTok your Android advertising ID (if your device
+            allows it), the Google Play install referrer, app events (install,
+            open, next-day return and subscription purchase with product, price
+            and currency) and technical device data (model, OS version,
+            language, screen size, network type, IP address and app version). It
+            never receives your email, nickname, MindRack account or game
+            progress. You can delete or reset your advertising ID in{" "}
+            <B>Android Settings → Google → Ads</B>. The iOS app does not include
+            this SDK. The app shows no ads.
+          </P>
+
+          <P>
             <B>With an account (optional):</B> your email (required for sign-up),
             a hashed password (managed by Supabase, never stored in plain text),
             your chosen nickname, emoji, daily scores, stats, and a progress
@@ -459,8 +572,9 @@ export default function MindRackPrivacyPage() {
           </P>
 
           <P>
-            The app has no ads, no tracking SDKs and requests no sensitive
-            permissions. It offers an optional in-app subscription. Content is
+            The app shows no ads, uses no advertising SDK other than the TikTok
+            measurement SDK on Android described above, and requests no
+            sensitive permissions. It offers an optional in-app subscription. Content is
             suitable for all ages. Performance metrics describe how you do{" "}
             <B>inside MindRack games</B>; the app makes no claim about memory,
             attention, IQ or health.
