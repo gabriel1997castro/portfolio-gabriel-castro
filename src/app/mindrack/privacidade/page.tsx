@@ -163,29 +163,48 @@ const subscriptionRows: [React.ReactNode, string][] = [
     </span>,
     "Fazer a assinatura acompanhar você na troca de aparelho",
   ],
+  [
+    <span key="inst">
+      <B>Identificador de instalação</B> (o mesmo da medição de uso, abaixo)
+    </span>,
+    "Saber quanto cada canal de divulgação rende, somando receita por origem",
+  ],
+  [
+    <span key="origem">
+      <B>Origem da instalação</B> informada pela loja: na App Store, a campanha
+      da Apple Ads (via AdServices, sem pedir permissão de rastreamento e sem o
+      identificador de publicidade); no Google Play, os parâmetros do link de
+      divulgação
+    </span>,
+    "Saber de onde vêm as instalações e as assinaturas",
+  ],
 ];
 
-const tiktokRows: [React.ReactNode, string][] = [
+const usageRows: [React.ReactNode, string][] = [
   [
-    <span key="adid">
-      <B>ID de publicidade do Android</B> (se o aparelho permitir)
+    <span key="nome">
+      <B>Nome do evento</B> e categoria fixa (ex.: etapa <code>goal</code>,
+      gatilho <code>onboarding</code>)
     </span>,
-    "Ligar a instalação ao anúncio que a originou",
-  ],
-  [<B key="ref">Referenciador de instalação do Google Play</B>, "Idem"],
-  [
-    <span key="ev">
-      <B>Eventos do app</B>: instalação, abertura, retorno no dia seguinte e
-      compra da assinatura (produto, valor e moeda)
-    </span>,
-    "Medir o resultado das campanhas",
+    "Medir o funil do produto",
   ],
   [
-    <span key="tec">
-      <B>Dados técnicos do aparelho</B>: modelo, versão do sistema, idioma,
-      tamanho da tela, tipo de rede, endereço IP e versão do app
+    <span key="inst">
+      <B>Identificador de instalação</B> — número aleatório criado pelo app,
+      guardado só no aparelho
     </span>,
-    "Funcionamento e combate a fraude da medição",
+    "Contar etapas por instalação, sem saber quem é a pessoa",
+  ],
+  [
+    <B key="plat">Plataforma, versão do app e idioma</B>,
+    "Separar os resultados por versão e idioma",
+  ],
+  [
+    <span key="ref">
+      <B>Origem da instalação</B> (só Android): os parâmetros do link do Google
+      Play pelo qual o app foi instalado, como <code>utm_source=tiktok</code>
+    </span>,
+    "Saber qual divulgação traz quem fica e quem assina",
   ],
 ];
 
@@ -244,7 +263,7 @@ export default function MindRackPrivacyPage() {
               Política de Privacidade — MindRack
             </h1>
             <p className="text-sm text-muted-foreground">
-              <B>Última atualização:</B> 6 de outubro de 2026
+              <B>Última atualização:</B> 17 de outubro de 2026
             </p>
           </header>
 
@@ -261,12 +280,6 @@ export default function MindRackPrivacyPage() {
               conta é <B>opcional</B> e existe para quem quiser participar do
               ranking e ter backup automático na nuvem.
             </P>
-
-            <P>
-              No Android, o app usa o SDK do TikTok para medir se as nossas
-              campanhas no TikTok trazem instalações — veja a seção{" "}
-              <B>Medição de campanhas</B> abaixo.
-            </P>
           </Section>
 
           <Section id="sem-conta">
@@ -275,8 +288,7 @@ export default function MindRackPrivacyPage() {
             <UL>
               <li>
                 <B>não coleta, não armazena e não compartilha nenhum dado
-                pessoal</B>, exceto, no Android, os dados de medição enviados ao
-                TikTok descritos abaixo;
+                pessoal</B>;
               </li>
               <li>
                 salva o progresso e o <B>histórico de partidas</B> (data, jogo,
@@ -321,6 +333,15 @@ export default function MindRackPrivacyPage() {
             </P>
 
             <P>
+              O RevenueCat nos devolve os eventos da assinatura (compra,
+              renovação, reembolso, com valor, imposto e comissão da loja) junto
+              com a origem da instalação. Guardamos isso no nosso servidor
+              (Supabase) <B>sem</B> o id da sua conta: o cliente do RevenueCat
+              vira um código embaralhado, que só serve para contar assinantes
+              distintos.
+            </P>
+
+            <P>
               O último estado conhecido da assinatura fica guardado{" "}
               <B>no aparelho</B> para o app continuar funcionando sem internet.
             </P>
@@ -333,52 +354,35 @@ export default function MindRackPrivacyPage() {
           <Section id="medicao-de-uso">
             <H2>Medição de uso</H2>
             <P>
-              O app conta, <B>apenas no seu aparelho</B>, quantas vezes certas
-              coisas aconteceram — abrir o app, concluir uma fase, ver o paywall,
-              iniciar um teste, comprar, restaurar. São{" "}
-              <B>contadores anônimos</B>: não há e-mail, apelido, identificador de
-              usuário nem de aparelho, e <B>nada é enviado pela internet</B>.
-              Servem para entender o produto e podem ser apagados junto com o
-              progresso.
-            </P>
-          </Section>
-
-          <Section id="medicao-de-campanhas">
-            <H2>Medição de campanhas (TikTok, Android)</H2>
-            <P>
-              Divulgamos o MindRack com anúncios no TikTok. Para saber se esses
-              anúncios trazem instalações, a versão <B>Android</B> do app inclui
-              o <B>TikTok App Events SDK</B>, da TikTok (
-              <ExtLink href="https://www.tiktok.com/legal/page/row/privacy-policy/pt-BR">
-                política de privacidade
-              </ExtLink>{" "}
-              ·{" "}
-              <ExtLink href="https://ads.tiktok.com/i18n/official/policy/business-products-terms">
-                termos dos produtos empresariais
-              </ExtLink>
-              ). A versão iOS não inclui esse SDK.
+              O app registra quando certas coisas acontecem — abrir o app, passar
+              por uma etapa das boas-vindas (e a resposta escolhida: objetivo,
+              tempo por dia, tipos de jogo), concluir uma fase, ver a oferta do
+              Premium, iniciar um teste, comprar, restaurar. Esses eventos são
+              guardados no aparelho e <B>enviados ao nosso servidor (Supabase)</B>{" "}
+              para medirmos, em conjunto, onde as pessoas desistem e o que
+              funciona.
             </P>
 
-            <DataTable rows={tiktokRows} dataHeader="Dado enviado ao TikTok" />
+            <DataTable rows={usageRows} dataHeader="Dado enviado" />
 
             <P>
-              O SDK <B>não recebe</B> seu e-mail, apelido, conta MindRack nem
-              progresso nos jogos. Não exibimos anúncios dentro do app.
+              Não são enviados e-mail, apelido, id de conta, id de aparelho, id
+              de publicidade nem nada que você digite — o envio é feito{" "}
+              <B>sem a sua sessão</B>, mesmo que você tenha conta. O
+              identificador de instalação some quando o app é desinstalado. Ele
+              vai também ao RevenueCat (acima) para somar a receita por origem;
+              nas nossas tabelas ele nunca fica junto do id da sua conta. O
+              endereço IP pode constar temporariamente nos registros técnicos do
+              provedor (Supabase), como em qualquer acesso à internet, mas não é
+              guardado junto com os eventos.
             </P>
 
             <P>
-              <B>Como limitar:</B> em{" "}
-              <B>Configurações do Android → Google → Anúncios</B>, você pode
-              apagar ou redefinir o ID de publicidade; sem ele, o TikTok deixa de
-              ligar o seu aparelho aos anúncios. Para pedidos sobre os dados que o
-              TikTok guarda, use os canais da política dele.
+              <B>Base legal (LGPD):</B> legítimo interesse (melhorar o app), com
+              dados minimizados e sem identificação da pessoa.
             </P>
 
-            <P>
-              <B>Base legal (LGPD):</B> legítimo interesse — medir se a
-              divulgação do app funciona, sem montar perfil seu dentro do
-              MindRack.
-            </P>
+            <P>Não usamos SDK de publicidade, de rastreamento nem de perfil.</P>
           </Section>
 
           <Section id="com-conta">
@@ -421,10 +425,7 @@ export default function MindRackPrivacyPage() {
             <H2>O que o app NÃO faz</H2>
             <UL>
               <li>Não exibe anúncios;</li>
-              <li>
-                Não usa cookies nem SDKs de publicidade dentro do app — o único
-                SDK de medição é o do TikTok, no Android, descrito acima;
-              </li>
+              <li>Não usa cookies, SDKs de rastreamento nem publicidade;</li>
               <li>
                 Não vê nem armazena dados de pagamento — quem cobra é a loja;
               </li>
@@ -434,8 +435,7 @@ export default function MindRackPrivacyPage() {
               </li>
               <li>
                 Não vende dados nem os compartilha com terceiros para fins
-                publicitários, além da medição de campanhas do TikTok descrita
-                acima;
+                publicitários;
               </li>
               <li>Não apaga o seu progresso quando a assinatura termina;</li>
               <li>
@@ -460,9 +460,8 @@ export default function MindRackPrivacyPage() {
           <Section id="criancas">
             <H2>Crianças</H2>
             <P>
-              Sem conta, o app não coleta dados pessoais de nenhum usuário,
-              incluindo crianças, exceto a medição de campanhas do TikTok no
-              Android descrita acima. O conteúdo é adequado para todas as idades (classificação
+              O app não coleta dados pessoais de nenhum usuário sem conta,
+              incluindo crianças. O conteúdo é adequado para todas as idades (classificação
               livre). A criação de conta (opcional) requer e-mail.
             </P>
           </Section>
@@ -493,7 +492,7 @@ export default function MindRackPrivacyPage() {
               Privacy Policy — MindRack (English)
             </h2>
             <p className="text-sm text-muted-foreground">
-              <B>Last updated:</B> October 6, 2026
+              <B>Last updated:</B> October 17, 2026
             </p>
           </header>
 
@@ -506,8 +505,7 @@ export default function MindRackPrivacyPage() {
 
           <P>
             <B>Without an account:</B> the app does not collect, store, or share
-            any personal data, except the TikTok campaign measurement described
-            below (Android only). Progress and your match history (date, game, level,
+            any personal data. Progress and your match history (date, game, level,
             duration, stars, mistakes, moves and hints) are stored locally on your
             device only.
           </P>
@@ -519,8 +517,16 @@ export default function MindRackPrivacyPage() {
             <B>RevenueCat</B>, which processes the store receipts on our behalf:
             it receives the purchase receipt and an anonymous user identifier
             (plus your MindRack account id, if you created one, so the
-            subscription follows you across devices). It never receives your
-            email, nickname or progress. The last known subscription status is
+            subscription follows you across devices), the random installation
+            identifier described below and where the install came from as
+            reported by the store — on the App Store, the Apple Ads campaign
+            (via AdServices, without asking for tracking permission and without
+            the advertising identifier); on Google Play, the parameters of the
+            promotional link. It never receives your email, nickname or
+            progress. RevenueCat sends us back the subscription events (purchase,
+            renewal, refund, with price, tax and store commission) and the
+            install source; we store them on our server (Supabase){" "}
+            <B>without</B> your account id. The last known subscription status is
             cached on your device so the app keeps working offline. Levels 1–10 of
             every game, the Daily Challenge, the leaderboard, your account and
             backup remain free, and no progress is ever deleted when a
@@ -528,29 +534,23 @@ export default function MindRackPrivacyPage() {
           </P>
 
           <P>
-            <B>Usage counters:</B> the app keeps anonymous counters on your device
-            (app opens, levels completed, paywall views, purchases, restores).
-            They contain no identifiers of any kind and are never sent over the
-            network.
-          </P>
-
-          <P>
-            <B>Campaign measurement (TikTok, Android only):</B> we promote
-            MindRack with ads on TikTok. To know whether those ads bring
-            installs, the Android app includes the{" "}
-            <B>TikTok App Events SDK</B> (
-            <ExtLink href="https://www.tiktok.com/legal/page/row/privacy-policy/en">
-              TikTok privacy policy
-            </ExtLink>
-            ). It sends TikTok your Android advertising ID (if your device
-            allows it), the Google Play install referrer, app events (install,
-            open, next-day return and subscription purchase with product, price
-            and currency) and technical device data (model, OS version,
-            language, screen size, network type, IP address and app version). It
-            never receives your email, nickname, MindRack account or game
-            progress. You can delete or reset your advertising ID in{" "}
-            <B>Android Settings → Google → Ads</B>. The iOS app does not include
-            this SDK. The app shows no ads.
+            <B>Usage events:</B> the app records when certain things happen (app
+            opens, each welcome step and the answer picked — goal, minutes per
+            day, game types —, levels completed, Premium offer views, trials,
+            purchases, restores) and sends them to our server (Supabase) to
+            measure, in aggregate, where people drop off. Each event carries only
+            its name, a fixed category, a random <B>installation identifier</B>{" "}
+            created by the app and kept on the device (not linked to your
+            account, deleted when you uninstall), the platform, the app version
+            and the language — and, on Android only, the parameters of the
+            Google Play link the app was installed from (such as{" "}
+            <code>utm_source=tiktok</code>). No email, nickname, account id,
+            device id or advertising id is sent, and events are sent without
+            your session even if you have an account. Your IP address may appear
+            temporarily in the provider&apos;s technical logs (Supabase), as with
+            any internet request, but it is not stored with the events. Legal
+            basis (LGPD): legitimate interest, with minimized, non-identifying
+            data.
           </P>
 
           <P>
@@ -572,9 +572,8 @@ export default function MindRackPrivacyPage() {
           </P>
 
           <P>
-            The app shows no ads, uses no advertising SDK other than the TikTok
-            measurement SDK on Android described above, and requests no
-            sensitive permissions. It offers an optional in-app subscription. Content is
+            The app has no ads, no tracking SDKs and requests no sensitive
+            permissions. It offers an optional in-app subscription. Content is
             suitable for all ages. Performance metrics describe how you do{" "}
             <B>inside MindRack games</B>; the app makes no claim about memory,
             attention, IQ or health.
