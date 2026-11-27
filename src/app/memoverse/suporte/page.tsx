@@ -16,7 +16,7 @@ import {
 
 const title = "Suporte — MemoVerse";
 const description =
-  "Página de suporte do aplicativo MemoVerse: compra, backup, troca de celular e contato. Em português e inglês.";
+  "Página de suporte do aplicativo MemoVerse: teste grátis, compra, backup, troca de celular e contato. Em português e inglês.";
 
 export const metadata: Metadata = {
   title,
@@ -45,19 +45,20 @@ export default function MemoVerseSupportPage() {
           <MailLink />. Normalmente respondo em alguns dias.
         </P>
 
-        <Section id="o-que-e-gratis">
-          <H2>O que é grátis</H2>
+        <Section id="teste-gratis">
+          <H2>Teste grátis e compra</H2>
           <P>
-            Sem pagar nada, você tem <B>revisões ilimitadas</B>,{" "}
-            <B>três versículos em aprendizado por vez</B>, widgets, áudio e
-            coleções. Não é preciso criar conta.
+            Você usa <B>tudo do app de graça por três dias</B>, sem criar
+            conta. O teste é confirmado pela App Store, sem custo, e nada é
+            cobrado sozinho quando ele acaba.
           </P>
           <P>
-            <B>Liberar tudo</B> é uma <B>compra única</B>, não uma assinatura:
-            tira o limite de versículos em aprendizado e vale para a família
-            (Compartilhamento Familiar). Se você não puder pagar, a tela da
-            compra tem <B>Não consigo pagar agora</B>, que libera o mesmo sem
-            custo.
+            Depois dos três dias, o app fica fechado até você tocar em{" "}
+            <B>Liberar tudo</B>, uma <B>compra única</B>, não uma assinatura,
+            que vale para a família (Compartilhamento Familiar). Seus
+            versículos e seu progresso continuam guardados. Se você não puder
+            pagar, a tela da compra tem <B>Não consigo pagar agora</B>, que
+            libera o mesmo sem custo.
           </P>
         </Section>
 
@@ -124,19 +125,20 @@ export default function MemoVerseSupportPage() {
           usually reply within a few days.
         </P>
 
-        <Section id="whats-free">
-          <H2>What is free</H2>
+        <Section id="free-trial">
+          <H2>Free trial and purchase</H2>
           <P>
-            At no cost you get <B>unlimited reviews</B>,{" "}
-            <B>three verses in learning at a time</B>, widgets, audio and
-            collections. No account is needed.
+            You use <B>the whole app free for three days</B>, with no account.
+            The App Store confirms the trial at no cost, and nothing is charged
+            when it ends.
           </P>
           <P>
-            <B>Unlock everything</B> is a <B>one-time purchase</B>, not a
-            subscription: it removes the limit on verses in learning and is
-            shared with your family (Family Sharing). If you cannot pay, the
-            purchase screen has <B>I can&apos;t pay right now</B>, which
-            unlocks the same at no charge.
+            After the three days, the app stays closed until you tap{" "}
+            <B>Unlock everything</B>, a <B>one-time purchase</B>, not a
+            subscription, shared with your family (Family Sharing). Your verses
+            and progress stay saved. If you cannot pay, the purchase screen has{" "}
+            <B>I can&apos;t pay right now</B>, which unlocks the same at no
+            charge.
           </P>
         </Section>
 
